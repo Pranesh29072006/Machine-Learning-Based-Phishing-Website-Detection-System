@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block title %}Scan Analysis Result | {{ result.url }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <!-- Breadcrumb Navigation -->
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item"><a href="{{ url_for('index') }}"><i class="bi bi-house me-1"></i> Dashboard</a></li>
+      <li class="breadcrumb-item active text-cyan" aria-current="page">Scan Report #{{ result.scan_id }}</li>
+    </ol>
+  </nav>
+
+  <!-- Verdict Banner -->
+  <div class="row justify-content-center mb-4">
+    <div class="col-lg-10">
+      {% if result.prediction == 'Phishing' %}
+        <div class="verdict-banner verdict-phishing">
+          <i class="bi bi-shield-exclamation display-2 text-danger"></i>
+          <div class="verdict-title">SUSPECTED PHISHING THREAT</div>
+          <p class="text-light mb-3" style="max-width: 600px; margin: 0 auto;">
+            This URL exhibits prominent structural anomalies and lexical indicators strongly associated with credential harvesting or deceptive redirects.
+          </p>
+          <div class="d-inline-flex align-items-center gap-2 px-3 py-1 bg-danger bg-opacity-25 border border-danger rounded-pill text-danger fw-bold small">
+            <i class="bi bi-radioactive"></i> {{ result.risk_level }} &bull; Threat Confidence: {{ result.confidence }}%
+          </div>
+        </div>
+      {% else %}
+        <div class="verdict-banner verdict-legitimate">
+          <i class="bi bi-shield-check display-2 text-success"></i>
+          <div class="verdict-title">CLASSIFIED LEGITIMATE / SAFE</div>
+          <p class="text-light mb-3" style="max-width: 600px; margin: 0 auto;">
+            The analyzed URL adheres to standard domain conventions and benign lexical patterns without evident fraudulent signatures.
+          </p>
+          <div class="d-inline-flex align-items-center gap-2 px-3 py-1 bg-success bg-opacity-25 border border-success rounded-pill text-success fw-bold small">
+            <i class="bi bi-check-circle-fill"></i> {{ result.risk_level }} &bull; Model Confidence: {{ result.confidence }}%
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Submitted Target & Probability Overview -->
+  <div class="row justify-content-center mb-4">
+    <div class="col-lg-10">
+      <div class="cyber-card p-4">
+        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 pb-3 border-bottom border-secondary border-opacity-25">
+          <div>
+            <div class="text-muted small text-uppercase fw-bold mb-1">Target Uniform Resource Locator (URL)</div>
+            <div class="font-mono text-light text-break fs-6 bg-dark bg-opacity-50 p-2 rounded border border-secondary border-opacity-25">
+              {{ result.url }}
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-2 flex-shrink-0">
+            <button class="btn btn-outline-cyan btn-sm btn-copy-url" data-copy="{{ result.url }}">
+              <i class="bi bi-clipboard"></i> Copy URL
+            </button>
+            <span class="badge bg-secondary p-2 small">
+              <i class="bi bi-calendar3 me-1"></i> {{ result.analyzed_at }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Confidence Gauge & Verdict Summary -->
+        <div class="row align-items-center mt-3 pt-2 gy-3">
+          <div class="col-md-5">
+            <div class="d-flex justify-content-between small text-muted mb-1">
+              <span>Model Classification Certainty:</span>
+              <span class="fw-bold text-light">{{ result.confidence }}%</span>
+            </div>
+            <div class="confidence-meter">
+              {% if result.prediction == 'Phishing' %}
+                <div class="progress-bar bg-danger" style="width: {{ result.confidence }}%;"></div>
+              {% else %}
+                <div class="progress-bar bg-success" style="width: {{ result.confidence }}%;"></div>
+              {% endif %}
+            </div>
+            <div class="d-flex justify-content-between text-dim small mt-1 font-mono">
+              <span>50% (Uncertain)</span>
+              <span>100% (High Confidence)</span>
+            </div>
+          </div>
+          <div class="col-md-7">
+            <div class="small text-muted mb-1 fw-bold text-uppercase">Diagnostic Summary:</div>
+            <p class="small text-light mb-0">
+              {{ result.summary }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Extracted Heuristic Features Breakdown -->
+  <div class="row justify-content-center mb-4">
+    <div class="col-lg-10">
+      <div class="cyber-card p-4">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div>
+            <h2 class="h5 fw-bold text-light mb-1">
+              <i class="bi bi-cpu text-cyan me-2"></i> Extracted URL Feature Breakdown
+            </h2>
+            <p class="text-muted small mb-0">
+              Granular lexical attributes fed into the trained Machine Learning classifier during evaluation.
+            </p>
+          </div>
+          <span class="badge bg-dark border border-secondary text-cyan px-3 py-2">
+            17 Vectors Analyzed
+          </span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table cyber-table align-middle">
+            <thead>
+              <tr>
+                <th style="width: 25%;">Heuristic Feature</th>
+                <th style="width: 20%;">Detected Value</th>
+                <th style="width: 15%;">Threat Status</th>
+                <th style="width: 40%;">Security Implication</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for feat in result.feature_details %}
+                <tr>
+                  <td class="fw-semibold text-light">
+                    {{ feat.name }}
+                  </td>
+                  <td class="font-mono text-cyan">
+                    {{ feat.value }}
+                  </td>
+                  <td>
+                    {% if feat.status == 'safe' %}
+                      <span class="badge badge-safe">
+                        <i class="bi bi-check-circle me-1"></i> Normal
+                      </span>
+                    {% elif feat.status == 'warning' %}
+                      <span class="badge badge-warning">
+                        <i class="bi bi-exclamation-triangle me-1"></i> Elevated
+                      </span>
+                    {% else %}
+                      <span class="badge badge-danger">
+                        <i class="bi bi-x-octagon me-1"></i> Suspicious
+                      </span>
+                    {% endif %}
+                  </td>
+                  <td class="small text-muted">
+                    {{ feat.description }}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mandatory Security Warning & Advisory Card -->
+  <div class="row justify-content-center mb-4">
+    <div class="col-lg-10">
+      <div class="alert alert-warning border-0 cyber-card p-4">
+        <div class="d-flex align-items-start gap-3">
+          <i class="bi bi-exclamation-octagon-fill text-warning fs-3 flex-shrink-0"></i>
+          <div>
+            <h3 class="h6 fw-bold text-light mb-1">Critical Cybersecurity Disclaimer</h3>
+            <p class="small text-muted mb-2">
+              This detection system utilizes statistical machine learning algorithms to evaluate URL syntax and structure. Predictions represent mathematical likelihoods, <strong>not an absolute guarantee of safety</strong>.
+            </p>
+            <ul class="small text-muted mb-0 ps-3">
+              <li>Even legitimate-appearing URLs can be compromised via zero-day vulnerabilities, sub-domain takeovers, or cross-site scripting (XSS).</li>
+              <li>Modern threat actors frequently secure valid SSL/TLS certificates for malicious landing pages.</li>
+              <li>Never provide passwords, two-factor authentication tokens, or payment card details on unverified domains.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Action Buttons -->
+  <div class="row justify-content-center">
+    <div class="col-lg-10 d-flex flex-wrap align-items-center justify-content-between gap-3">
+      <a href="{{ url_for('index') }}" class="btn btn-cyber">
+        <i class="bi bi-search me-1"></i> Scan Another Website
+      </a>
+      <div class="d-flex gap-2">
+        <a href="{{ url_for('history') }}" class="btn btn-dark border border-secondary text-light">
+          <i class="bi bi-clock-history me-1"></i> Full Scan History
+        </a>
+        <a href="{{ url_for('model_performance') }}" class="btn btn-dark border border-secondary text-light">
+          <i class="bi bi-bar-chart-line me-1"></i> Model Metrics
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+

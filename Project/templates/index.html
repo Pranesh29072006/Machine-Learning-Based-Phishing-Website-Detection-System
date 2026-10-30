@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | ML Phishing Website Detection System{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <!-- Hero Header -->
+  <div class="text-center mb-4">
+    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 mb-2 rounded-pill bg-dark border border-secondary small text-cyan">
+      <i class="bi bi-shield-check"></i>
+      <span>Cyber Defense Intelligence &bull; Scikit-learn Classifier</span>
+      {% if model_ready %}
+        <span class="badge bg-success ms-1">Model Ready</span>
+      {% else %}
+        <span class="badge bg-warning text-dark ms-1">Model Pending Training</span>
+      {% endif %}
+    </div>
+    <h1 class="display-5 fw-bold text-light mb-2">
+      Machine Learning Based <span class="highlight">Phishing Website Detection</span> System
+    </h1>
+    <p class="text-muted mx-auto" style="max-width: 720px; font-size: 1.05rem;">
+      Analyze suspicious Uniform Resource Locators (URLs) before visiting them. Extract 17 lexical and structural security features, evaluate fraud probability, and safeguard credentials against cyber threat actors.
+    </p>
+  </div>
+
+  <!-- Main URL Detection Scanner Form -->
+  <div class="row justify-content-center mb-5">
+    <div class="col-lg-10 col-xl-9">
+      <div class="cyber-card p-4 p-md-5">
+        <form id="analyzeForm" action="{{ url_for('analyze') }}" method="POST">
+          <label for="urlInput" class="form-label text-light fw-semibold mb-2">
+            <i class="bi bi-search text-cyan me-1"></i> Enter Website URL for Security Inspection:
+          </label>
+          <div class="search-box-wrapper d-flex flex-column flex-md-row align-items-stretch gap-2 mb-3">
+            <div class="input-group flex-grow-1">
+              <span class="input-group-text bg-transparent border-0 text-cyan fs-5 ps-3">
+                <i class="bi bi-globe"></i>
+              </span>
+              <input 
+                type="text" 
+                id="urlInput" 
+                name="url" 
+                class="form-control cyber-input" 
+                placeholder="https://example.com/login.php or domain name..." 
+                autocomplete="off" 
+                required
+              >
+            </div>
+            <button type="submit" class="btn btn-cyber">
+              <i class="bi bi-radar"></i>
+              <span>Analyze Website</span>
+            </button>
+          </div>
+
+          <!-- Quick Interactive Sample Pills -->
+          <div class="d-flex flex-wrap align-items-center gap-2 pt-2">
+            <span class="small text-muted fw-semibold me-1">Test Samples:</span>
+            <span class="sample-badge" data-sample="https://www.google.com">
+              <i class="bi bi-check-circle text-success me-1"></i> Google (Safe)
+            </span>
+            <span class="sample-badge" data-sample="https://en.wikipedia.org/wiki/Computer_security">
+              <i class="bi bi-check-circle text-success me-1"></i> Wikipedia (Safe)
+            </span>
+            <span class="sample-badge" data-sample="https://github.com/torvalds/linux">
+              <i class="bi bi-check-circle text-success me-1"></i> GitHub (Safe)
+            </span>
+            <span class="sample-badge" data-sample="http://192.168.1.1/paypal-login/verification.php?cmd=_login_submit">
+              <i class="bi bi-exclamation-triangle text-danger me-1"></i> IP Address Phishing
+            </span>
+            <span class="sample-badge" data-sample="https://appleid.apple.com.verify-apple-device.account-security.info/signin">
+              <i class="bi bi-exclamation-triangle text-danger me-1"></i> Subdomain Spoof
+            </span>
+            <span class="sample-badge" data-sample="http://bit.ly/secure-bank-login-2024-urgent-update">
+              <i class="bi bi-link-45deg text-warning me-1"></i> Shortened Link
+            </span>
+          </div>
+        </form>
+
+        <!-- Advisory Notice -->
+        <div class="mt-4 pt-3 border-top border-secondary border-opacity-25 d-flex align-items-center gap-2 text-muted small">
+          <i class="bi bi-info-circle text-cyan"></i>
+          <span>
+            <strong>Safe Local Execution:</strong> URLs are evaluated lexically via the offline machine learning model. This system never connects to or executes submitted destinations.
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPI Statistics Row -->
+  <div class="row g-3 mb-5">
+    <div class="col-sm-6 col-lg-3">
+      <div class="cyber-card stat-card stat-cyan h-100">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <span class="stat-label">Total URLs Analyzed</span>
+          <i class="bi bi-activity text-cyan stat-icon"></i>
+        </div>
+        <div class="stat-value text-cyan">{{ stats.total }}</div>
+        <div class="small text-muted mt-1">Logged in SQLite database</div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <div class="cyber-card stat-card stat-green h-100">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <span class="stat-label">Legitimate Sites</span>
+          <i class="bi bi-shield-check text-success stat-icon"></i>
+        </div>
+        <div class="stat-value text-success">{{ stats.legitimate }}</div>
+        <div class="small text-muted mt-1">Classified low threat risk</div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <div class="cyber-card stat-card stat-red h-100">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <span class="stat-label">Phishing Threats</span>
+          <i class="bi bi-shield-exclamation text-danger stat-icon"></i>
+        </div>
+        <div class="stat-value text-danger">{{ stats.phishing }}</div>
+        <div class="small text-muted mt-1">Suspected fraudulent links</div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <div class="cyber-card stat-card stat-blue h-100">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <span class="stat-label">Model Accuracy</span>
+          <i class="bi bi-bullseye text-primary stat-icon"></i>
+        </div>
+        <div class="stat-value text-light">
+          {% if metrics and metrics.accuracy %}
+            {{ (metrics.accuracy * 100) | round(2) }}%
+          {% else %}
+            N/A
+          {% endif %}
+        </div>
+        <div class="small text-muted mt-1">Tested on held-out samples</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Scan Activity & System Highlights -->
+  <div class="row g-4">
+    <!-- Recent Scans -->
+    <div class="col-lg-8">
+      <div class="cyber-card p-4 h-100">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <h2 class="h5 fw-bold text-light mb-0">
+            <i class="bi bi-clock-history text-cyan me-2"></i> Recent Security Scans
+          </h2>
+          <a href="{{ url_for('history') }}" class="btn btn-sm btn-outline-cyan">
+            View All History <i class="bi bi-chevron-right"></i>
+          </a>
+        </div>
+
+        {% if recent_scans %}
+          <div class="table-responsive">
+            <table class="table cyber-table align-middle">
+              <thead>
+                <tr>
+                  <th>Target URL</th>
+                  <th>Verdict</th>
+                  <th>Confidence</th>
+                  <th>Scan Time</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for scan in recent_scans %}
+                  <tr>
+                    <td style="max-width: 240px;">
+                      <div class="text-truncate font-mono small text-light" title="{{ scan.url }}">
+                        {{ scan.url }}
+                      </div>
+                    </td>
+                    <td>
+                      {% if scan.prediction == 'Phishing' %}
+                        <span class="badge badge-danger">
+                          <i class="bi bi-shield-exclamation me-1"></i> Phishing
+                        </span>
+                      {% else %}
+                        <span class="badge badge-safe">
+                          <i class="bi bi-shield-check me-1"></i> Legitimate
+                        </span>
+                      {% endif %}
+                    </td>
+                    <td>
+                      <span class="fw-semibold">{{ scan.confidence }}%</span>
+                    </td>
+                    <td class="text-muted small">
+                      {{ scan.created_at }}
+                    </td>
+                    <td>
+                      <a href="{{ url_for('view_result', scan_id=scan.id) }}" class="btn btn-sm btn-dark border border-secondary text-light">
+                        Details
+                      </a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div class="text-center py-5 text-muted">
+            <i class="bi bi-inbox fs-1 mb-2 d-block"></i>
+            <p class="mb-0">No URLs scanned yet. Enter a website URL above to perform your first detection.</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Defense Features & Pipeline Highlights -->
+    <div class="col-lg-4">
+      <div class="cyber-card p-4 h-100">
+        <h2 class="h5 fw-bold text-light mb-3">
+          <i class="bi bi-cpu text-cyan me-2"></i> Defense Engine Highlights
+        </h2>
+        <ul class="list-unstyled mb-0 d-flex flex-column gap-3">
+          <li class="d-flex align-items-start gap-3">
+            <div class="p-2 rounded bg-dark border border-secondary text-cyan">
+              <i class="bi bi-fingerprint fs-5"></i>
+            </div>
+            <div>
+              <h3 class="h6 fw-semibold text-light mb-1">17 Heuristic Feature Vectors</h3>
+              <p class="small text-muted mb-0">Extracts domain length, subdomain depth, hyphen frequency, IP presence, sensitive keywords, and redirection anomalies.</p>
+            </div>
+          </li>
+          <li class="d-flex align-items-start gap-3">
+            <div class="p-2 rounded bg-dark border border-secondary text-success">
+              <i class="bi bi-graph-up-arrow fs-5"></i>
+            </div>
+            <div>
+              <h3 class="h6 fw-semibold text-light mb-1">Verified Training Benchmarks</h3>
+              <p class="small text-muted mb-0">Trained on real-world datasets from UNB CIC, PhishTank, and Cisco OpenDNS. Zero simulated synthetic data.</p>
+            </div>
+          </li>
+          <li class="d-flex align-items-start gap-3">
+            <div class="p-2 rounded bg-dark border border-secondary text-primary">
+              <i class="bi bi-safe2 fs-5"></i>
+            </div>
+            <div>
+              <h3 class="h6 fw-semibold text-light mb-1">Zero-Trust Non-Destructive</h3>
+              <p class="small text-muted mb-0">Analyzes syntax without sending outbound packets or loading external scripts, preventing malware infection.</p>
+            </div>
+          </li>
+          <li class="d-flex align-items-start gap-3">
+            <div class="p-2 rounded bg-dark border border-secondary text-warning">
+              <i class="bi bi-shield-lock fs-5"></i>
+            </div>
+            <div>
+              <h3 class="h6 fw-semibold text-light mb-1">Risk Calibration</h3>
+              <p class="small text-muted mb-0">Outputs continuous probability confidence scores to distinguish borderline suspicious links from confirmed safe domains.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+

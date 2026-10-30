@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block title %}Threat Architecture & Feature Engineering | PhishGuard AI{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <!-- Header -->
+  <div class="mb-4">
+    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 mb-2 rounded-pill bg-dark border border-secondary small text-cyan">
+      <i class="bi bi-shield-shaded"></i>
+      <span>Cyber Threat Intelligence & Machine Learning Architecture</span>
+    </div>
+    <h1 class="h3 fw-bold text-light mb-1">
+      Phishing Attack Anatomy & <span class="highlight">Heuristic Engineering</span>
+    </h1>
+    <p class="text-muted small mb-0">
+      Academic documentation detailing URL manipulation attack vectors, lexical anomaly detection, and machine learning defense mechanisms.
+    </p>
+  </div>
+
+  <!-- Anatomy of URL Phishing Card -->
+  <div class="cyber-card p-4 p-md-5 mb-4">
+    <h2 class="h4 fw-bold text-light mb-3">
+      <i class="bi bi-diagram-3-fill text-cyan me-2"></i> How Attackers Exploit URL Anatomy
+    </h2>
+    <p class="text-muted">
+      Phishing remains the primary initial access vector in modern cyber intrusions. Attackers exploit how human users and web browsers interpret Uniform Resource Locators (URLs) to trick victims into disclosing credentials, financial tokens, and session cookies.
+    </p>
+
+    <div class="row g-4 mt-2">
+      <div class="col-md-6 col-lg-3">
+        <div class="p-3 bg-dark bg-opacity-50 rounded border border-secondary border-opacity-25 h-100">
+          <div class="text-danger fs-4 mb-2"><i class="bi bi-layers"></i></div>
+          <h3 class="h6 fw-bold text-light mb-1">Subdomain Camouflage</h3>
+          <p class="small text-muted mb-0">
+            Attackers prepend trusted brand names as subdomains (e.g. <code>paypal.com.attacker-domain.xyz</code>) to visually fool victims scanning only the leftmost portion of the URL.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="p-3 bg-dark bg-opacity-50 rounded border border-secondary border-opacity-25 h-100">
+          <div class="text-warning fs-4 mb-2"><i class="bi bi-link-45deg"></i></div>
+          <h3 class="h6 fw-bold text-light mb-1">URL Shortening Cloaking</h3>
+          <p class="small text-muted mb-0">
+            Services like bit.ly, tinyurl, or t.co mask the true destination domain, evading static email filters and preventing inspection until click-time.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="p-3 bg-dark bg-opacity-50 rounded border border-secondary border-opacity-25 h-100">
+          <div class="text-cyan fs-4 mb-2"><i class="bi bi-hdd-network"></i></div>
+          <h3 class="h6 fw-bold text-light mb-1">Direct IP Address Hosts</h3>
+          <p class="small text-muted mb-0">
+            Hosting credential harvesting kits directly on raw IPv4/IPv6 addresses avoids domain registration records (WHOIS) and bypasses DNS reputation filters.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="p-3 bg-dark bg-opacity-50 rounded border border-secondary border-opacity-25 h-100">
+          <div class="text-primary fs-4 mb-2"><i class="bi bi-at"></i></div>
+          <h3 class="h6 fw-bold text-light mb-1">Authentication '@' Bypass</h3>
+          <p class="small text-muted mb-0">
+            RFC standards interpret anything preceding the <code>@</code> character as user authentication information, redirecting the browser to the domain following the symbol.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- The 17 Heuristic Feature Vectors -->
+  <div class="cyber-card p-4 p-md-5 mb-4">
+    <h2 class="h4 fw-bold text-light mb-3">
+      <i class="bi bi-cpu-fill text-cyan me-2"></i> The 17 Extracted Heuristic Feature Vectors
+    </h2>
+    <p class="text-muted mb-4">
+      Our feature extractor standardizes URLs into a 17-dimensional mathematical vector analyzed identically during model training and live runtime inference.
+    </p>
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="p-3 rounded bg-dark border border-secondary border-opacity-25">
+          <h3 class="h6 fw-bold text-cyan mb-2">1. Lexical & Structural Metrics</h3>
+          <ul class="small text-muted mb-0 ps-3">
+            <li><strong>url_length:</strong> Total string character length. Suspicious links often exceed 75 characters.</li>
+            <li><strong>domain_length:</strong> Length of registered hostname. Spoof domains typically inflate lengths.</li>
+            <li><strong>num_dots:</strong> Frequency of '.' characters. Multi-dot strings reveal nested subdomains.</li>
+            <li><strong>num_hyphens:</strong> Hyphen counts. Hyphens rarely appear in reputable root brands.</li>
+            <li><strong>num_digits:</strong> Numeric digit frequency, indicating session IDs or hashed routes.</li>
+            <li><strong>path_length:</strong> Directory depth of resource paths.</li>
+            <li><strong>num_query_params:</strong> Count of query delimiters transmitting stolen data.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="p-3 rounded bg-dark border border-secondary border-opacity-25">
+          <h3 class="h6 fw-bold text-cyan mb-2">2. Heuristic Indicators & Syntax Anomalies</h3>
+          <ul class="small text-muted mb-0 ps-3">
+            <li><strong>has_ip_address:</strong> Binary flag detecting direct IPv4/IPv6 hosts.</li>
+            <li><strong>is_https:</strong> Indicator of secure protocol transmission.</li>
+            <li><strong>has_at_symbol:</strong> Presence of '@' user-info override character.</li>
+            <li><strong>num_suspicious_symbols:</strong> Count of symbols including ?, =, &, %, ~, +, $.</li>
+            <li><strong>num_subdomains:</strong> Depth of subdomains beyond standard domain hierarchy.</li>
+            <li><strong>is_shortened:</strong> Match against known URL shortening service database.</li>
+            <li><strong>has_sensitive_keywords:</strong> Presence of trigger words (login, verify, secure, banking).</li>
+            <li><strong>has_double_slash_redirect:</strong> '//' occurring within the URL path.</li>
+            <li><strong>prefix_suffix_hyphen:</strong> Domain names containing leading, trailing, or internal hyphens.</li>
+            <li><strong>has_tld_in_subdomain:</strong> TLD camouflage (e.g., .com embedded inside subdomains).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- End-to-End System Pipeline Flow -->
+  <div class="cyber-card p-4 p-md-5 mb-4">
+    <h2 class="h4 fw-bold text-light mb-3">
+      <i class="bi bi-bezier2 text-cyan me-2"></i> End-to-End Machine Learning Pipeline
+    </h2>
+
+    <div class="row g-3 text-center">
+      <div class="col-md-3">
+        <div class="p-3 bg-dark rounded border border-secondary border-opacity-25 h-100">
+          <span class="badge bg-secondary mb-2">Step 1</span>
+          <h3 class="h6 fw-bold text-light mb-1">Target Submission</h3>
+          <p class="small text-muted mb-0">HTTP/HTTPS validation, syntax parsing, and scheme sanitation without outbound network requests.</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="p-3 bg-dark rounded border border-secondary border-opacity-25 h-100">
+          <span class="badge bg-secondary mb-2">Step 2</span>
+          <h3 class="h6 fw-bold text-light mb-1">Feature Extraction</h3>
+          <p class="small text-muted mb-0">Modular feature extraction converts the URL into a 17-dimensional numeric vector.</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="p-3 bg-dark rounded border border-secondary border-opacity-25 h-100">
+          <span class="badge bg-secondary mb-2">Step 3</span>
+          <h3 class="h6 fw-bold text-light mb-1">Classifier Inference</h3>
+          <p class="small text-muted mb-0">Pre-trained ensemble pipeline evaluates feature weights and calculates continuous probability.</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="p-3 bg-dark rounded border border-secondary border-opacity-25 h-100">
+          <span class="badge bg-secondary mb-2">Step 4</span>
+          <h3 class="h6 fw-bold text-light mb-1">Verdict & History</h3>
+          <p class="small text-muted mb-0">Generates risk score, diagnostic breakdown, and commits timestamped log to SQLite.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Academic Project Summary -->
+  <div class="cyber-card p-4 text-center">
+    <h2 class="h5 fw-bold text-light mb-2">Computer Science & Engineering Demonstration Project</h2>
+    <p class="small text-muted mx-auto mb-3" style="max-width: 650px;">
+      Built with Python Flask, Scikit-learn, Bootstrap 5, and Chart.js. Fully operational offline in modern development environments like Visual Studio Code.
+    </p>
+    <a href="{{ url_for('index') }}" class="btn btn-cyber">
+      <i class="bi bi-shield-check me-1"></i> Return to Threat Scanner
+    </a>
+  </div>
+
+</div>
+{% endblock %}
+

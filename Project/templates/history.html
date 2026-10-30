@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+
+{% block title %}Scan History Log | ML Phishing Website Detection System{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <!-- Header & Action Row -->
+  <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
+    <div>
+      <h1 class="h3 fw-bold text-light mb-1">
+        <i class="bi bi-clock-history text-cyan me-2"></i> Security Scan History
+      </h1>
+      <p class="text-muted small mb-0">
+        Persistent SQLite inspection log of submitted targets. All targets are preserved safely without outbound network visits.
+      </p>
+    </div>
+    
+    <div class="d-flex align-items-center gap-2">
+      {% if scans %}
+        <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#clearHistoryModal">
+          <i class="bi bi-trash3 me-1"></i> Clear History
+        </button>
+      {% endif %}
+      <a href="{{ url_for('index') }}" class="btn btn-cyber btn-sm">
+        <i class="bi bi-plus-lg me-1"></i> New Analysis
+      </a>
+    </div>
+  </div>
+
+  <!-- Quick Stats Bar -->
+  <div class="row g-3 mb-4">
+    <div class="col-sm-4">
+      <div class="cyber-card p-3 d-flex align-items-center justify-content-between">
+        <div>
+          <div class="small text-muted text-uppercase fw-semibold">Total Scanned</div>
+          <div class="h4 fw-bold text-light mb-0">{{ stats.total }}</div>
+        </div>
+        <i class="bi bi-database text-cyan fs-2"></i>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="cyber-card p-3 d-flex align-items-center justify-content-between">
+        <div>
+          <div class="small text-muted text-uppercase fw-semibold">Safe Verified</div>
+          <div class="h4 fw-bold text-success mb-0">{{ stats.legitimate }}</div>
+        </div>
+        <i class="bi bi-shield-check text-success fs-2"></i>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="cyber-card p-3 d-flex align-items-center justify-content-between">
+        <div>
+          <div class="small text-muted text-uppercase fw-semibold">Threats Flagged</div>
+          <div class="h4 fw-bold text-danger mb-0">{{ stats.phishing }}</div>
+        </div>
+        <i class="bi bi-shield-exclamation text-danger fs-2"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Filter Box -->
+  <div class="cyber-card p-3 mb-4">
+    <form method="GET" action="{{ url_for('history') }}" class="row g-2 align-items-center">
+      <div class="col-md-9 col-lg-10">
+        <div class="input-group">
+          <span class="input-group-text bg-dark border-secondary text-cyan">
+            <i class="bi bi-search"></i>
+          </span>
+          <input 
+            type="text" 
+            name="q" 
+            value="{{ search_query }}" 
+            class="form-control bg-dark text-light border-secondary font-mono small" 
+            placeholder="Search scans by URL keyword or verdict (e.g. google, paypal, Phishing)..."
+          >
+        </div>
+      </div>
+      <div class="col-md-3 col-lg-2 d-flex gap-2">
+        <button type="submit" class="btn btn-outline-cyan w-100 btn-sm">
+          Filter
+        </button>
+        {% if search_query %}
+          <a href="{{ url_for('history') }}" class="btn btn-dark border border-secondary btn-sm" title="Clear Filter">
+            <i class="bi bi-x-lg"></i>
+          </a>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+
+  <!-- Scans Table -->
+  <div class="cyber-card p-4">
+    {% if scans %}
+      <div class="table-responsive">
+        <table class="table cyber-table align-middle">
+          <thead>
+            <tr>
+              <th style="width: 5%;">#</th>
+              <th style="width: 45%;">Target URL</th>
+              <th style="width: 15%;">Prediction</th>
+              <th style="width: 15%;">Confidence</th>
+              <th style="width: 12%;">Logged At</th>
+              <th style="width: 8%;" class="text-end">Report</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for scan in scans %}
+              <tr>
+                <td class="text-dim small font-mono">
+                  #{{ scan.id }}
+                </td>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <button class="btn btn-sm btn-link p-0 text-cyan btn-copy-url" data-copy="{{ scan.url }}" title="Copy URL">
+                      <i class="bi bi-clipboard"></i>
+                    </button>
+                    <!-- Displayed as escaped plain text. Never auto-linked or browsed! -->
+                    <span class="font-mono small text-light text-break" style="max-width: 450px;">
+                      {{ scan.url }}
+                    </span>
+                  </div>
+                </td>
+                <td>
+                  {% if scan.prediction == 'Phishing' %}
+                    <span class="badge badge-danger">
+                      <i class="bi bi-shield-exclamation me-1"></i> Phishing
+                    </span>
+                  {% else %}
+                    <span class="badge badge-safe">
+                      <i class="bi bi-shield-check me-1"></i> Legitimate
+                    </span>
+                  {% endif %}
+                </td>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="fw-bold font-mono">{{ scan.confidence }}%</span>
+                    <span class="badge bg-dark border border-secondary text-dim small" style="font-size:0.7rem;">
+                      {{ scan.risk_level }}
+                    </span>
+                  </div>
+                </td>
+                <td class="text-muted small">
+                  {{ scan.created_at }}
+                </td>
+                <td class="text-end">
+                  <a href="{{ url_for('view_result', scan_id=scan.id) }}" class="btn btn-sm btn-dark border border-secondary text-light">
+                    View <i class="bi bi-chevron-right small"></i>
+                  </a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="text-center py-5 text-muted">
+        <i class="bi bi-folder2-open display-3 d-block mb-3 text-dim"></i>
+        {% if search_query %}
+          <h4 class="h5 text-light mb-2">No Matching Records</h4>
+          <p class="small mb-3">No scans match your search query: <code class="text-cyan">"{{ search_query }}"</code></p>
+          <a href="{{ url_for('history') }}" class="btn btn-outline-cyan btn-sm">Clear Search Filter</a>
+        {% else %}
+          <h4 class="h5 text-light mb-2">Scan History Empty</h4>
+          <p class="small mb-3">Your SQLite database has no recorded scans yet.</p>
+          <a href="{{ url_for('index') }}" class="btn btn-cyber btn-sm">Analyze Your First Website</a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+
+</div>
+
+<!-- Clear History Confirmation Modal -->
+<div class="modal fade" id="clearHistoryModal" tabindex="-1" aria-labelledby="clearHistoryModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content cyber-card border border-danger">
+      <div class="modal-header border-secondary border-opacity-25">
+        <h5 class="modal-title text-danger" id="clearHistoryModalLabel">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i> Confirm Clear History
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-light">
+        <p class="mb-2">Are you sure you want to delete all stored scan history from the SQLite database?</p>
+        <p class="small text-muted mb-0">This operation is permanent and cannot be undone.</p>
+      </div>
+      <div class="modal-footer border-secondary border-opacity-25">
+        <button type="button" class="btn btn-dark border border-secondary text-light" data-bs-dismiss="modal">Cancel</button>
+        <form action="{{ url_for('clear_history') }}" method="POST">
+          <button type="submit" class="btn btn-danger">
+            <i class="bi bi-trash3 me-1"></i> Yes, Clear History
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

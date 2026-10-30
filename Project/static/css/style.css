@@ -1,0 +1,354 @@
+/* =========================================================================
+   Cybersecurity Operations Center Theme
+   Machine Learning Based Phishing Website Detection System
+   ========================================================================= */
+
+:root {
+  --bg-primary: #070b14;
+  --bg-secondary: #0d1527;
+  --card-bg: #111c35;
+  --card-border: rgba(56, 189, 248, 0.18);
+  --card-hover-border: rgba(56, 189, 248, 0.45);
+  
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+
+  --cyber-cyan: #00f2fe;
+  --cyber-blue: #38bdf8;
+  --cyber-accent: #2563eb;
+  --cyber-green: #10b981;
+  --cyber-red: #ef4444;
+  --cyber-amber: #f59e0b;
+  
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', Courier, monospace;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(14, 165, 233, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 85% 75%, rgba(37, 99, 235, 0.08) 0%, transparent 45%);
+  background-attachment: fixed;
+}
+
+/* Typography & Links */
+a {
+  color: var(--cyber-blue);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+a:hover {
+  color: var(--cyber-cyan);
+  text-decoration: underline;
+}
+
+code, .font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Navbar */
+.navbar-cyber {
+  background-color: rgba(13, 21, 39, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--card-border);
+  padding: 0.85rem 0;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-main) !important;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.navbar-brand span.highlight {
+  background: linear-gradient(135deg, var(--cyber-cyan), var(--cyber-blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-link {
+  color: var(--text-muted) !important;
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.5rem 0.85rem !important;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+.nav-link:hover, .nav-link.active {
+  color: var(--text-main) !important;
+  background-color: rgba(56, 189, 248, 0.1);
+}
+
+/* Cards */
+.cyber-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.cyber-card:hover {
+  border-color: var(--card-hover-border);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+}
+
+/* KPI Stat Cards */
+.stat-card {
+  padding: 1.25rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+}
+.stat-card.stat-blue::before { background: var(--cyber-blue); }
+.stat-card.stat-green::before { background: var(--cyber-green); }
+.stat-card.stat-red::before { background: var(--cyber-red); }
+.stat-card.stat-cyan::before { background: var(--cyber-cyan); }
+
+.stat-icon {
+  font-size: 2rem;
+  opacity: 0.8;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+/* URL Input & Analysis Bar */
+.search-box-wrapper {
+  background: rgba(13, 21, 39, 0.9);
+  border: 2px solid var(--card-border);
+  border-radius: 14px;
+  padding: 0.5rem;
+  box-shadow: 0 0 35px rgba(0, 242, 254, 0.08);
+  transition: all 0.3s ease;
+}
+.search-box-wrapper:focus-within {
+  border-color: var(--cyber-cyan);
+  box-shadow: 0 0 35px rgba(0, 242, 254, 0.25);
+}
+
+.cyber-input {
+  background: transparent !important;
+  border: none !important;
+  color: var(--text-main) !important;
+  font-size: 1.05rem;
+  font-family: var(--font-mono);
+  box-shadow: none !important;
+  padding: 0.75rem 1rem;
+}
+.cyber-input::placeholder {
+  color: var(--text-dim) !important;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+}
+
+.btn-cyber {
+  background: linear-gradient(135deg, #0ea5e9, #2563eb);
+  color: #ffffff !important;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  padding: 0.75rem 1.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+}
+.btn-cyber:hover {
+  background: linear-gradient(135deg, #38bdf8, #1d4ed8);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);
+}
+
+.sample-badge {
+  cursor: pointer;
+  background: rgba(56, 189, 248, 0.08);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+.sample-badge:hover {
+  background: rgba(56, 189, 248, 0.2);
+  color: var(--cyber-cyan);
+  border-color: var(--cyber-cyan);
+}
+
+/* Loading Overlay */
+#loadingOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 11, 20, 0.88);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.radar-spinner {
+  width: 70px;
+  height: 70px;
+  border: 3px solid rgba(56, 189, 248, 0.15);
+  border-radius: 50%;
+  border-top-color: var(--cyber-cyan);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Result Cards & Badges */
+.verdict-banner {
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.verdict-banner.verdict-phishing {
+  background: linear-gradient(180deg, rgba(239, 68, 68, 0.18) 0%, rgba(239, 68, 68, 0.05) 100%);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+.verdict-banner.verdict-legitimate {
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.18) 0%, rgba(16, 185, 129, 0.05) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.verdict-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+.verdict-phishing .verdict-title {
+  color: var(--cyber-red);
+}
+.verdict-legitimate .verdict-title {
+  color: var(--cyber-green);
+}
+
+.confidence-meter {
+  height: 12px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+/* Feature Details Table */
+.cyber-table {
+  color: var(--text-main);
+  background-color: transparent !important;
+  margin-bottom: 0;
+}
+.cyber-table th {
+  background-color: rgba(13, 21, 39, 0.8) !important;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--card-border) !important;
+  padding: 0.85rem 1rem;
+}
+.cyber-table td {
+  background-color: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+  color: var(--text-main);
+  padding: 0.85rem 1rem;
+  vertical-align: middle;
+}
+.cyber-table tr:hover td {
+  background-color: rgba(56, 189, 248, 0.03) !important;
+}
+
+/* Custom Status Badges */
+.badge-safe {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  font-weight: 600;
+}
+.badge-warning {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  font-weight: 600;
+}
+.badge-danger {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  font-weight: 600;
+}
+
+/* Confusion Matrix Box */
+.cm-box {
+  background: rgba(13, 21, 39, 0.7);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 1.25rem;
+  text-align: center;
+}
+.cm-box.cm-tn {
+  border-color: rgba(16, 185, 129, 0.4);
+  background: rgba(16, 185, 129, 0.06);
+}
+.cm-box.cm-tp {
+  border-color: rgba(16, 185, 129, 0.4);
+  background: rgba(16, 185, 129, 0.06);
+}
+.cm-box.cm-fp {
+  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.06);
+}
+.cm-box.cm-fn {
+  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.06);
+}
+
+/* Footer */
+footer {
+  margin-top: auto;
+  border-top: 1px solid var(--card-border);
+  background-color: var(--bg-secondary);
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  padding: 1.5rem 0;
+}
+

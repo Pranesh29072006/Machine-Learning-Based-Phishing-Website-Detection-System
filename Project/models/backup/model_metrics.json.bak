@@ -1,0 +1,289 @@
+{
+    "model_name": "Random Forest",
+    "trained_at": "2026-10-29 11:07:36",
+    "total_samples": 7000,
+    "train_samples": 5600,
+    "test_samples": 1400,
+    "accuracy": 0.9614,
+    "precision": 0.9764,
+    "recall": 0.9457,
+    "f1_score": 0.9608,
+    "roc_auc": 0.9946,
+    "confusion_matrix": [
+        [
+            684,
+            16
+        ],
+        [
+            38,
+            662
+        ]
+    ],
+    "feature_importances": [
+        {
+            "feature": "url_length",
+            "importance": 0.2219
+        },
+        {
+            "feature": "path_length",
+            "importance": 0.2118
+        },
+        {
+            "feature": "domain_length",
+            "importance": 0.1678
+        },
+        {
+            "feature": "is_https",
+            "importance": 0.0921
+        },
+        {
+            "feature": "num_dots",
+            "importance": 0.072
+        },
+        {
+            "feature": "num_hyphens",
+            "importance": 0.0657
+        },
+        {
+            "feature": "num_digits",
+            "importance": 0.0567
+        },
+        {
+            "feature": "num_subdomains",
+            "importance": 0.026
+        },
+        {
+            "feature": "has_sensitive_keywords",
+            "importance": 0.0235
+        },
+        {
+            "feature": "num_suspicious_symbols",
+            "importance": 0.0229
+        },
+        {
+            "feature": "num_query_params",
+            "importance": 0.0182
+        },
+        {
+            "feature": "prefix_suffix_hyphen",
+            "importance": 0.0106
+        },
+        {
+            "feature": "has_tld_in_subdomain",
+            "importance": 0.0044
+        },
+        {
+            "feature": "is_shortened",
+            "importance": 0.0041
+        },
+        {
+            "feature": "has_at_symbol",
+            "importance": 0.0016
+        },
+        {
+            "feature": "has_double_slash_redirect",
+            "importance": 0.0004
+        },
+        {
+            "feature": "has_ip_address",
+            "importance": 0.0002
+        }
+    ],
+    "model_comparison": {
+        "Random Forest": {
+            "accuracy": 0.9614,
+            "precision": 0.9764,
+            "recall": 0.9457,
+            "f1_score": 0.9608,
+            "roc_auc": 0.9946,
+            "confusion_matrix": [
+                [
+                    684,
+                    16
+                ],
+                [
+                    38,
+                    662
+                ]
+            ],
+            "classification_report": {
+                "0": {
+                    "precision": 0.9473684210526315,
+                    "recall": 0.9771428571428571,
+                    "f1-score": 0.9620253164556962,
+                    "support": 700.0
+                },
+                "1": {
+                    "precision": 0.976401179941003,
+                    "recall": 0.9457142857142857,
+                    "f1-score": 0.9608127721335269,
+                    "support": 700.0
+                },
+                "accuracy": 0.9614285714285714,
+                "macro avg": {
+                    "precision": 0.9618848004968172,
+                    "recall": 0.9614285714285714,
+                    "f1-score": 0.9614190442946116,
+                    "support": 1400.0
+                },
+                "weighted avg": {
+                    "precision": 0.9618848004968172,
+                    "recall": 0.9614285714285714,
+                    "f1-score": 0.9614190442946116,
+                    "support": 1400.0
+                }
+            }
+        },
+        "Logistic Regression": {
+            "accuracy": 0.8371,
+            "precision": 0.8491,
+            "recall": 0.82,
+            "f1_score": 0.8343,
+            "roc_auc": 0.9202,
+            "confusion_matrix": [
+                [
+                    598,
+                    102
+                ],
+                [
+                    126,
+                    574
+                ]
+            ],
+            "classification_report": {
+                "0": {
+                    "precision": 0.8259668508287292,
+                    "recall": 0.8542857142857143,
+                    "f1-score": 0.8398876404494382,
+                    "support": 700.0
+                },
+                "1": {
+                    "precision": 0.849112426035503,
+                    "recall": 0.82,
+                    "f1-score": 0.8343023255813954,
+                    "support": 700.0
+                },
+                "accuracy": 0.8371428571428572,
+                "macro avg": {
+                    "precision": 0.8375396384321161,
+                    "recall": 0.8371428571428572,
+                    "f1-score": 0.8370949830154168,
+                    "support": 1400.0
+                },
+                "weighted avg": {
+                    "precision": 0.8375396384321162,
+                    "recall": 0.8371428571428572,
+                    "f1-score": 0.8370949830154167,
+                    "support": 1400.0
+                }
+            }
+        },
+        "Decision Tree": {
+            "accuracy": 0.9471,
+            "precision": 0.9757,
+            "recall": 0.9171,
+            "f1_score": 0.9455,
+            "roc_auc": 0.9785,
+            "confusion_matrix": [
+                [
+                    684,
+                    16
+                ],
+                [
+                    58,
+                    642
+                ]
+            ],
+            "classification_report": {
+                "0": {
+                    "precision": 0.921832884097035,
+                    "recall": 0.9771428571428571,
+                    "f1-score": 0.9486823855755895,
+                    "support": 700.0
+                },
+                "1": {
+                    "precision": 0.9756838905775076,
+                    "recall": 0.9171428571428571,
+                    "f1-score": 0.9455081001472754,
+                    "support": 700.0
+                },
+                "accuracy": 0.9471428571428572,
+                "macro avg": {
+                    "precision": 0.9487583873372714,
+                    "recall": 0.9471428571428571,
+                    "f1-score": 0.9470952428614324,
+                    "support": 1400.0
+                },
+                "weighted avg": {
+                    "precision": 0.9487583873372714,
+                    "recall": 0.9471428571428572,
+                    "f1-score": 0.9470952428614324,
+                    "support": 1400.0
+                }
+            }
+        },
+        "Gradient Boosting": {
+            "accuracy": 0.9579,
+            "precision": 0.9748,
+            "recall": 0.94,
+            "f1_score": 0.9571,
+            "roc_auc": 0.9923,
+            "confusion_matrix": [
+                [
+                    683,
+                    17
+                ],
+                [
+                    42,
+                    658
+                ]
+            ],
+            "classification_report": {
+                "0": {
+                    "precision": 0.9420689655172414,
+                    "recall": 0.9757142857142858,
+                    "f1-score": 0.9585964912280702,
+                    "support": 700.0
+                },
+                "1": {
+                    "precision": 0.9748148148148148,
+                    "recall": 0.94,
+                    "f1-score": 0.9570909090909091,
+                    "support": 700.0
+                },
+                "accuracy": 0.9578571428571429,
+                "macro avg": {
+                    "precision": 0.9584418901660281,
+                    "recall": 0.9578571428571429,
+                    "f1-score": 0.9578437001594897,
+                    "support": 1400.0
+                },
+                "weighted avg": {
+                    "precision": 0.9584418901660281,
+                    "recall": 0.9578571428571429,
+                    "f1-score": 0.9578437001594898,
+                    "support": 1400.0
+                }
+            }
+        }
+    },
+    "feature_names": [
+        "url_length",
+        "domain_length",
+        "num_dots",
+        "num_hyphens",
+        "num_digits",
+        "has_ip_address",
+        "is_https",
+        "has_at_symbol",
+        "num_suspicious_symbols",
+        "num_subdomains",
+        "is_shortened",
+        "path_length",
+        "num_query_params",
+        "has_sensitive_keywords",
+        "has_double_slash_redirect",
+        "prefix_suffix_hyphen",
+        "has_tld_in_subdomain"
+    ]
+}
