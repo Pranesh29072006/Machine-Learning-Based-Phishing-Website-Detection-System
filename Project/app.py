@@ -86,11 +86,16 @@ def validate_url(url_string: str) -> tuple[bool, str, str]:
     if len(sanitized) > 2048:
         return False, "", "URL exceeds maximum permissible length of 2048 characters."
 
-    # Check for disallowed schemes early
-    if re.match(r"^[a-zA-Z0-9\+\.\-]+:", sanitized):
-        scheme_prefix = sanitized.split(":", 1)[0].lower()
-        if scheme_prefix not in ("http", "https"):
-            return False, "", f"Disallowed URL scheme '{scheme_prefix}:'. Only HTTP and HTTPS protocols are supported."
+    # Check for disallowed schemes early (ensuring host:port patterns like 192.168.1.1:8080 are not mistaken for schemes)
+    scheme_match = re.match(r"^([a-zA-Z][a-zA-Z0-9\+\.\-]*):", sanitized)
+    if scheme_match:
+        remainder = sanitized[len(scheme_match.group(0)):]
+        if re.match(r"^\d+(/|$)", remainder) and not sanitized.lower().startswith(("http://", "https://")):
+            pass  # Host:port pattern without explicit scheme
+        else:
+            scheme_prefix = scheme_match.group(1).lower()
+            if scheme_prefix not in ("http", "https"):
+                return False, "", f"Disallowed URL scheme '{scheme_prefix}:'. Only HTTP and HTTPS protocols are supported."
 
     # Prepend http:// if protocol is omitted to parse correctly
     if not (sanitized.startswith("http://") or sanitized.startswith("https://")):

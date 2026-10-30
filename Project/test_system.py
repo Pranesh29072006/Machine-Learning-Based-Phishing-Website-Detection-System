@@ -177,6 +177,8 @@ class ComprehensivePhishingTestSuite(unittest.TestCase):
         vec = fe.extract_features("https://test.com")
         self.assertEqual(len(vec), 17)
         self.assertEqual(len(fe.FEATURE_NAMES), 17)
+        details = fe.get_feature_details("https://test.com")
+        self.assertEqual(len(details), 17, "Feature details list must contain all 17 analyzed heuristic features")
 
     # =========================================================================
     # 2. INPUT VALIDATION & SECURITY
@@ -188,6 +190,8 @@ class ComprehensivePhishingTestSuite(unittest.TestCase):
             "http://example.com/page?id=123",
             "https://github.com/torvalds/linux",
             "http://192.168.1.1/index.html",
+            "192.168.1.1:8080",
+            "http://192.168.1.1:8080/login",
             "http://[2001:db8::1]/path",
             "https://sub.domain.co.uk/docs"
         ]

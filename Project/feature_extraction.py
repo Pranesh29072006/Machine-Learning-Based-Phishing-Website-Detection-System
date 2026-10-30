@@ -289,6 +289,18 @@ def get_feature_details(url: str) -> list:
             'description': 'Shortened links (e.g., bit.ly, tinyurl) mask the true destination domain from user inspection.'
         },
         {
+            'name': 'Path Length',
+            'value': int(raw_vec[11]),
+            'status': 'warning' if raw_vec[11] > 50 else 'safe',
+            'description': 'Deep directory paths (>50 characters) indicate embedded credential harvesting landing pages.'
+        },
+        {
+            'name': 'Query Parameter Count',
+            'value': int(raw_vec[12]),
+            'status': 'warning' if raw_vec[12] >= 3 else 'safe',
+            'description': 'High frequency of query parameters carrying session state or target identification tokens.'
+        },
+        {
             'name': 'Sensitive Security Keywords',
             'value': int(raw_vec[13]),
             'status': 'warning' if raw_vec[13] > 0 else 'safe',
