@@ -96,6 +96,10 @@ class ComprehensivePhishingTestSuite(unittest.TestCase):
         # Standard IPv4
         vec_ipv4 = fe.extract_features("http://192.168.1.1/login.php")
         self.assertEqual(vec_ipv4[idx], 1.0)
+
+        # IPv4 with authentication prefix
+        vec_ipv4_auth = fe.extract_features("http://support@192.168.1.1/login")
+        self.assertEqual(vec_ipv4_auth[idx], 1.0)
         
         # IPv4 with port
         vec_ipv4_port = fe.extract_features("http://10.0.0.1:8080/index")
@@ -136,7 +140,9 @@ class ComprehensivePhishingTestSuite(unittest.TestCase):
     def test_feature_11_is_shortened(self):
         idx = fe.FEATURE_NAMES.index("is_shortened")
         self.assertEqual(fe.extract_features("http://bit.ly/3xY9zQ")[idx], 1.0)
+        self.assertEqual(fe.extract_features("http://www.bit.ly/3xY9zQ")[idx], 1.0)
         self.assertEqual(fe.extract_features("https://tinyurl.com/abc123")[idx], 1.0)
+        self.assertEqual(fe.extract_features("https://www.tinyurl.com/abc123")[idx], 1.0)
         self.assertEqual(fe.extract_features("https://wikipedia.org")[idx], 0.0)
 
     def test_feature_12_path_length(self):
@@ -315,6 +321,35 @@ class ComprehensivePhishingTestSuite(unittest.TestCase):
         db.clear_history()
         stats_cleared = db.get_scan_stats()
         self.assertEqual(stats_cleared["total"], 0)
+        self.assertEqual(stats_cleared["avg_processing_time_ms"], 0.0)
+
+    def test_db_empty_stats_zero_latency(self):
+        """Verify that an empty database truthfully reports 0.0ms average latency."""
+        db.clear_history()
+        stats = db.get_scan_stats()
+        self.assertEqual(stats["total"], 0)
+        self.assertEqual(stats["avg_processing_time_ms"], 0.0)
+        self.assertEqual(stats["detection_rate"], 0.0)
+
+    def test_db_csv_formula_injection_sanitization(self):
+        """Verify CWE-1236 CSV injection protection prefixes dangerous formula symbols."""
+        db.clear_history()
+        db.save_scan("=cmd|calc!A0", "Phishing", 99.0, "High Risk", 10.5)
+        csv_data = db.export_scans_to_csv()
+        self.assertIn("Scan ID,Target URL,Classification", csv_data)
+        self.assertIn("1,'=cmd|calc!A0,Phishing", csv_data)
+
+    def test_scanner_prefill_url_parameter(self):
+        """Verify scanner route accepts and pre-fills URL parameter to prevent input loss."""
+        resp = self.client.get("/scanner?url=https://prefilled-example.com")
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn(b"value=\"https://prefilled-example.com\"", resp.data)
+
+    def test_dashboard_alias_endpoint(self):
+        """Verify /dashboard alias route loads successfully and renders overview."""
+        resp = self.client.get("/dashboard")
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn(b"Security Operations Dashboard", resp.data)
 
     # =========================================================================
     # 5. FLASK WEB ROUTES & API ENDPOINTS
@@ -408,6 +443,94 @@ class ComprehensivePhishingTestSuite(unittest.TestCase):
         resp = self.client.get("/this-route-does-not-exist-at-all")
         self.assertEqual(resp.status_code, 404)
         self.assertIn(b"404 - Not Found", resp.data)
+
+    def test_get_scanner_route(self):
+        resp = self.client.get("/scanner")
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn(b"URL Scanner", resp.data)
+
+    def test_get_overview_route(self):
+        resp = self.client.get("/overview")
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn(b"Security Operations Dashboard", resp.data)
+
+    def test_get_analytics_route(self):
+        resp = self.client.get("/analytics")
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn(b"Threat Analytics", resp.data)
+
+    def test_get_security_insights_route(self):
+        resp = self.client.get("/security-insights")
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn(b"Security Insights", resp.data)
+
+    def test_get_settings_route(self):
+        resp = self.client.get("/settings")
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn(b"Platform Settings", resp.data)
+
+    def test_export_history_csv(self):
+        resp = self.client.get("/history/export")
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn("text/csv", resp.content_type)
+        self.assertIn(b"Scan ID,Target URL,Classification", resp.data)
+
+    def test_api_analytics_json(self):
+        resp = self.client.get("/api/analytics")
+        self.assertEqual(resp.status_code, 200)
+        data = resp.get_json()
+        self.assertTrue(data["success"])
+        self.assertIn("analytics", data)
+        self.assertIn("daily_trends", data["analytics"])
+
+    def test_api_stats_json(self):
+        resp = self.client.get("/api/stats")
+        self.assertEqual(resp.status_code, 200)
+        data = resp.get_json()
+        self.assertTrue(data["success"])
+        self.assertIn("stats", data)
+        self.assertIn("total", data["stats"])
+
+    def test_feature_extraction_none_and_non_string(self):
+        """Verify feature extraction safely handles None and invalid types without crashing."""
+        vec_none = fe.extract_features(None)
+        self.assertEqual(vec_none.shape, (17,))
+        self.assertFalse(np.isnan(vec_none).any())
+
+        details_none = fe.get_feature_details(None)
+        self.assertEqual(len(details_none), 17)
+
+        # Test non-string input
+        vec_num = fe.extract_features(12345)
+        self.assertEqual(vec_num.shape, (17,))
+
+    def test_security_headers_present(self):
+        """Verify defensive HTTP security headers on responses."""
+        resp = self.client.get("/")
+        self.assertEqual(resp.headers.get("X-Content-Type-Options"), "nosniff")
+        self.assertEqual(resp.headers.get("X-Frame-Options"), "SAMEORIGIN")
+        self.assertIn("1; mode=block", resp.headers.get("X-XSS-Protection", ""))
+        self.assertEqual(resp.headers.get("Referrer-Policy"), "strict-origin-when-cross-origin")
+
+    def test_api_scan_alias_endpoint(self):
+        """Verify /api/scan works as an alias to /api/analyze."""
+        resp = self.client.post(
+            "/api/scan",
+            data=json.dumps({"url": "https://www.google.com"}),
+            content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, 200)
+        data = resp.get_json()
+        self.assertTrue(data["success"])
+        self.assertEqual(data["prediction"], "Legitimate")
+
+    def test_validation_localhost_support(self):
+        """Verify localhost with or without port is permitted for developer testing."""
+        is_valid, sanitized, err = app.validate_url("http://localhost:5000")
+        self.assertTrue(is_valid, f"localhost should be valid: {err}")
+
+        is_valid_plain, sanitized_plain, err_plain = app.validate_url("localhost")
+        self.assertTrue(is_valid_plain, f"localhost should be valid: {err_plain}")
 
 
 if __name__ == "__main__":

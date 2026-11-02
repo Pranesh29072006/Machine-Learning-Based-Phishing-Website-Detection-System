@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}Platform Settings & System Diagnostics | CodePulse AI{% endblock %}
+{% block page_title %}Platform Settings & Diagnostics{% endblock %}
+{% block breadcrumb %}System / Configuration & Diagnostic Telemetry{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+
+  <!-- Header -->
+  <div class="mb-4">
+    <h2 class="h5 fw-bold text-light mb-1">
+      <i class="bi bi-gear-fill text-cyan me-2"></i> User Preferences & System Architecture Diagnostics
+    </h2>
+    <p class="small text-muted mb-0">
+      Configure client-side interface display preferences and inspect internal environment telemetry.
+    </p>
+  </div>
+
+  <div class="row g-4 mb-4">
+    <!-- UI Preferences Form -->
+    <div class="col-lg-6">
+      <div class="cp-card h-100">
+        <div class="cp-card-header">
+          <div>
+            <h3 class="h6 fw-bold text-light mb-0">
+              <i class="bi bi-palette-fill text-cyan me-2"></i> Interface Display Preferences
+            </h3>
+            <div class="small text-dim">Preferences are stored locally in your client browser</div>
+          </div>
+          <span class="badge bg-dark border border-secondary text-dim small">Client Storage</span>
+        </div>
+        <div class="cp-card-body">
+          <form id="settingsPreferencesForm">
+            <!-- Theme Preference -->
+            <div class="mb-3">
+              <label for="prefTheme" class="form-label text-light fw-semibold small">Color Theme Mode</label>
+              <select id="prefTheme" class="form-select bg-dark text-light border-secondary border-opacity-25 small">
+                <option value="dark">Cyber Operations Dark (Default)</option>
+                <option value="contrast">High Contrast Cyber (Deep Black)</option>
+                <option value="light">Slate Light Mode</option>
+              </select>
+              <div class="form-text text-dim small">Controls background palette and contrast across all pages.</div>
+            </div>
+
+            <!-- Sidebar Preference -->
+            <div class="mb-3">
+              <label for="prefSidebar" class="form-label text-light fw-semibold small">Default Sidebar State</label>
+              <select id="prefSidebar" class="form-select bg-dark text-light border-secondary border-opacity-25 small">
+                <option value="expanded">Expanded (Full text labels)</option>
+                <option value="collapsed">Compact (Icon-only sidebar)</option>
+              </select>
+              <div class="form-text text-dim small">Determines sidebar layout on desktop monitors.</div>
+            </div>
+
+            <!-- Page Size Preference -->
+            <div class="mb-3">
+              <label for="prefPageSize" class="form-label text-light fw-semibold small">History Table Page Size</label>
+              <select id="prefPageSize" class="form-select bg-dark text-light border-secondary border-opacity-25 small">
+                <option value="10">10 records per page</option>
+                <option value="15">15 records per page (Default)</option>
+                <option value="25">25 records per page</option>
+                <option value="50">50 records per page</option>
+              </select>
+              <div class="form-text text-dim small">Number of scan history records displayed before pagination.</div>
+            </div>
+
+            <!-- Animated Radar Overlay -->
+            <div class="mb-4">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="prefAnimations" checked>
+                <label class="form-check-label text-light small fw-semibold" for="prefAnimations">
+                  Enable Animated Radar Scan Overlay
+                </label>
+              </div>
+              <div class="form-text text-dim small">Displays the cyber radar loading modal while feature extraction is running.</div>
+            </div>
+
+            <!-- Submit and Reset Buttons -->
+            <div class="d-flex align-items-center gap-2 pt-2 border-top border-secondary border-opacity-25">
+              <button type="submit" class="btn-cyber-primary">
+                <i class="bi bi-check2 me-1"></i> Save Preferences
+              </button>
+              <button type="button" id="btnResetPreferences" class="btn-cyber-secondary">
+                <i class="bi bi-arrow-counterclockwise me-1"></i> Reset Defaults
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- System Diagnostics Card -->
+    <div class="col-lg-6">
+      <div class="cp-card h-100">
+        <div class="cp-card-header">
+          <div>
+            <h3 class="h6 fw-bold text-light mb-0">
+              <i class="bi bi-cpu-fill text-cyan me-2"></i> Environment & Platform Diagnostics
+            </h3>
+            <div class="small text-dim">Verified runtime telemetry and engine metadata</div>
+          </div>
+          <span class="badge bg-dark border border-secondary text-success small">Operational</span>
+        </div>
+        <div class="cp-card-body d-flex flex-column gap-3">
+          <!-- Application Info -->
+          <div class="p-3 rounded bg-dark bg-opacity-50 border border-secondary border-opacity-25">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <span class="small text-dim text-uppercase fw-bold">Application Platform</span>
+              <span class="badge bg-primary bg-opacity-25 border border-primary text-light small">v2.5.0</span>
+            </div>
+            <div class="small text-muted mb-1"><strong class="text-light">Name:</strong> CodePulse AI</div>
+            <div class="small text-muted mb-1"><strong class="text-light">Framework:</strong> Python Flask 3.1.3 (WSGI / Werkzeug)</div>
+            <div class="small text-muted"><strong class="text-light">Inference Boundary:</strong> 100% Offline (Zero outbound HTTP/DNS sockets)</div>
+          </div>
+
+          <!-- Machine Learning Model Info -->
+          <div class="p-3 rounded bg-dark bg-opacity-50 border border-secondary border-opacity-25">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <span class="small text-dim text-uppercase fw-bold">Machine Learning Engine</span>
+              <span class="badge bg-success bg-opacity-25 border border-success text-success small">Scikit-Learn 1.9.1</span>
+            </div>
+            <div class="small text-muted mb-1"><strong class="text-light">Architecture:</strong> Random Forest Classifier (100 Trees, Max Depth 16)</div>
+            <div class="small text-muted mb-1"><strong class="text-light">Pipeline Scaler:</strong> Automated StandardScaler Encapsulated</div>
+            <div class="small text-muted"><strong class="text-light">Feature Dimensions:</strong> 17 Standardized Numerical Heuristic Vectors</div>
+          </div>
+
+          <!-- Database Info -->
+          <div class="p-3 rounded bg-dark bg-opacity-50 border border-secondary border-opacity-25">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <span class="small text-dim text-uppercase fw-bold">SQLite Persistence Repository</span>
+              <span class="badge bg-dark border border-secondary text-cyan small">SQLite 3</span>
+            </div>
+            <div class="small text-muted mb-1"><strong class="text-light">Storage File:</strong> <code class="text-cyan font-mono">{{ db_info.path }}</code></div>
+            <div class="small text-muted mb-1"><strong class="text-light">Database Size:</strong> {{ db_info.size_kb }} KB ({{ db_info.size_bytes }} bytes)</div>
+            <div class="small text-muted"><strong class="text-light">Total Scans Stored:</strong> {{ db_info.total_records }} rows in <code class="text-cyan font-mono">{{ db_info.table_name }}</code> table</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Toast Alert on Preference Save -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
+  <div id="settingsSavedToast" class="toast cp-card border-success" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header bg-dark border-secondary border-opacity-25 text-light">
+      <i class="bi bi-check-circle-fill text-success me-2"></i>
+      <strong class="me-auto">CodePulse AI Settings</strong>
+      <small class="text-dim">Just now</small>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body text-light small">
+      User interface display preferences have been successfully persisted!
+    </div>
+  </div>
+</div>
+{% endblock %}
+

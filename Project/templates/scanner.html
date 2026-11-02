@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}URL Threat Scanner | CodePulse AI Detection Platform{% endblock %}
+{% block page_title %}URL Threat Scanner Console{% endblock %}
+{% block breadcrumb %}Platform Operations / Interactive URL Scanner{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+
+  <!-- Scanner Hero Header -->
+  <div class="text-center mb-4">
+    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 mb-2 rounded-pill bg-dark border border-secondary border-opacity-25 small text-cyan">
+      <i class="bi bi-shield-check"></i>
+      <span>Autonomous Threat Inspection &bull; Scikit-Learn Classifier</span>
+      {% if model_ready %}
+        <span class="badge bg-success ms-1">Model Ready</span>
+      {% else %}
+        <span class="badge bg-warning text-dark ms-1">Model Offline</span>
+      {% endif %}
+    </div>
+    <h2 class="display-6 fw-bold text-light mb-2">
+      Intelligent <span class="highlight text-cyan">Uniform Resource Locator</span> Threat Scanner
+    </h2>
+    <p class="text-muted mx-auto" style="max-width: 740px;">
+      Inspect any suspicious link before navigating to it. CodePulse AI extracts 17 structural and lexical heuristic vectors to predict credential harvesting and fraud probability without making destructive outbound HTTP connections.
+    </p>
+  </div>
+
+  <!-- Primary URL Scanner Box -->
+  <div class="row justify-content-center mb-5">
+    <div class="col-lg-10 col-xl-9">
+      <div class="scanner-console-box">
+        <form id="analyzeForm" action="{{ url_for('analyze') }}" method="POST">
+          <label for="urlInput" class="form-label text-light fw-semibold mb-2 d-flex align-items-center justify-content-between">
+            <span><i class="bi bi-search text-cyan me-1"></i> Target Web Address for Inspection:</span>
+            <span class="text-dim small font-mono">Max 2,048 chars</span>
+          </label>
+          <div class="scanner-input-group mb-3">
+            <span class="scanner-icon"><i class="bi bi-globe"></i></span>
+            <input 
+              type="text" 
+              id="urlInput" 
+              name="url" 
+              class="form-control scanner-input" 
+              value="{{ prefill_url | default('', true) }}"
+              placeholder="Enter full website URL or domain (e.g. https://example.com/login.php or domain.com)..." 
+              autocomplete="off" 
+              required
+            >
+            <button type="button" id="btnClearInput" class="btn-clear-input" title="Clear input">
+              <i class="bi bi-x-lg"></i>
+            </button>
+            <button type="submit" class="btn-cyber-primary ms-2 flex-shrink-0">
+              <i class="bi bi-radar"></i>
+              <span>Analyze Threat</span>
+            </button>
+          </div>
+
+          <!-- Quick Interactive Sample Pills -->
+          <div class="d-flex flex-wrap align-items-center gap-2 pt-1">
+            <span class="text-dim small fw-semibold me-1"><i class="bi bi-lightning-fill text-warning me-1"></i>Pre-loaded Samples:</span>
+            <span class="sample-pill" data-sample="https://www.google.com">
+              <i class="bi bi-check-circle-fill text-success"></i> Google (Safe)
+            </span>
+            <span class="sample-pill" data-sample="https://en.wikipedia.org/wiki/Computer_security">
+              <i class="bi bi-check-circle-fill text-success"></i> Wikipedia (Safe)
+            </span>
+            <span class="sample-pill" data-sample="https://github.com/torvalds/linux">
+              <i class="bi bi-check-circle-fill text-success"></i> GitHub (Safe)
+            </span>
+            <span class="sample-pill" data-sample="http://192.168.1.1/paypal-login/verification.php?cmd=_login_submit">
+              <i class="bi bi-exclamation-triangle-fill text-danger"></i> IP Phishing
+            </span>
+            <span class="sample-pill" data-sample="https://appleid.apple.com.verify-apple-device.account-security.info/signin">
+              <i class="bi bi-exclamation-triangle-fill text-danger"></i> Subdomain Spoof
+            </span>
+            <span class="sample-pill" data-sample="http://bit.ly/secure-bank-login-2024-urgent-update">
+              <i class="bi bi-link-45deg text-warning"></i> Shortened Link
+            </span>
+            <span class="sample-pill" data-sample="http://localhost:5000">
+              <i class="bi bi-laptop text-primary"></i> Localhost Demo
+            </span>
+          </div>
+        </form>
+
+        <!-- Defensive Zero-Trust Operational Notice -->
+        <div class="mt-4 pt-3 border-top border-secondary border-opacity-25 d-flex align-items-center gap-2 text-muted small">
+          <i class="bi bi-shield-lock-fill text-cyan fs-5 flex-shrink-0"></i>
+          <span>
+            <strong>Zero-Trust Offline Safety:</strong> Target links are parsed lexically and evaluated mathematically via the local Scikit-Learn Random Forest pipeline. The server never initiates socket connections or loads external scripts from target domains.
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Operational Architecture Guide: How Scanning Works -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-4">
+      <div class="cp-card p-4 h-100">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="p-2 rounded bg-primary bg-opacity-10 border border-primary border-opacity-25 text-primary fs-4">
+            <i class="bi bi-code-slash"></i>
+          </div>
+          <div>
+            <h3 class="h6 fw-bold text-light mb-0">1. Lexical Parsing</h3>
+            <span class="text-dim small">Syntax Normalization</span>
+          </div>
+        </div>
+        <p class="small text-muted mb-0">
+          The engine validates protocol structure, strips control characters, normalizes DNS labels, and isolates hostnames, paths, and query string tokens.
+        </p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="cp-card p-4 h-100">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="p-2 rounded bg-cyan bg-opacity-10 border border-cyan border-opacity-25 text-cyan fs-4">
+            <i class="bi bi-fingerprint"></i>
+          </div>
+          <div>
+            <h3 class="h6 fw-bold text-light mb-0">2. 17-Vector Extraction</h3>
+            <span class="text-dim small">Structural Heuristics</span>
+          </div>
+        </div>
+        <p class="small text-muted mb-0">
+          Computes URL length, nested subdomain counts, hyphen frequencies, IP address detection, shortening domains, and sensitive credential trigger words.
+        </p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="cp-card p-4 h-100">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="p-2 rounded bg-success bg-opacity-10 border border-success border-opacity-25 text-success fs-4">
+            <i class="bi bi-cpu"></i>
+          </div>
+          <div>
+            <h3 class="h6 fw-bold text-light mb-0">3. Ensemble Classification</h3>
+            <span class="text-dim small">Calibrated Probability</span>
+          </div>
+        </div>
+        <p class="small text-muted mb-0">
+          The 17 numerical features are scaled and evaluated by 100 decision trees to produce a continuous certainty score and categorized risk level.
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+

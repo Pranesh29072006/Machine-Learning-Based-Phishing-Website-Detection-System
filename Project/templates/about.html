@@ -1,166 +1,305 @@
 {% extends "base.html" %}
 
-{% block title %}Threat Architecture & Feature Engineering | PhishGuard AI{% endblock %}
+{% block title %}About & Threat Architecture | CodePulse AI Platform{% endblock %}
+{% block page_title %}Platform Documentation & Threat Architecture{% endblock %}
+{% block breadcrumb %}System / Documentation & Threat Architecture{% endblock %}
 
 {% block content %}
-<div class="container py-4">
+<div class="container-fluid p-0">
 
-  <!-- Header -->
+  <!-- Header Banner -->
   <div class="mb-4">
-    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 mb-2 rounded-pill bg-dark border border-secondary small text-cyan">
-      <i class="bi bi-shield-shaded"></i>
-      <span>Cyber Threat Intelligence & Machine Learning Architecture</span>
+    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 mb-2 rounded-pill bg-dark border border-secondary border-opacity-25 small text-cyan">
+      <i class="bi bi-info-circle-fill"></i>
+      <span>Enterprise Cybersecurity Architecture & Academic Documentation</span>
     </div>
-    <h1 class="h3 fw-bold text-light mb-1">
-      Phishing Attack Anatomy & <span class="highlight">Heuristic Engineering</span>
-    </h1>
+    <h2 class="h4 fw-bold text-light mb-1">
+      About <span class="highlight text-cyan">CodePulse AI</span> &bull; Threat Architecture
+    </h2>
     <p class="text-muted small mb-0">
-      Academic documentation detailing URL manipulation attack vectors, lexical anomaly detection, and machine learning defense mechanisms.
+      Autonomous machine learning platform for pre-click Uniform Resource Locator inspection, lexical heuristic analysis, and fraud prevention.
     </p>
   </div>
 
-  <!-- Anatomy of URL Phishing Card -->
-  <div class="cyber-card p-4 p-md-5 mb-4">
-    <h2 class="h4 fw-bold text-light mb-3">
-      <i class="bi bi-diagram-3-fill text-cyan me-2"></i> How Attackers Exploit URL Anatomy
-    </h2>
-    <p class="text-muted">
-      Phishing remains the primary initial access vector in modern cyber intrusions. Attackers exploit how human users and web browsers interpret Uniform Resource Locators (URLs) to trick victims into disclosing credentials, financial tokens, and session cookies.
-    </p>
+  <!-- Phishing Attack Anatomy Card -->
+  <div class="cp-card mb-4">
+    <div class="cp-card-header">
+      <h3 class="h6 fw-bold text-light mb-0">
+        <i class="bi bi-diagram-3-fill text-cyan me-2"></i> Phishing Attack Anatomy: How Attackers Exploit URL Syntax
+      </h3>
+      <span class="badge bg-danger bg-opacity-25 border border-danger text-danger small">Threat Vectors</span>
+    </div>
+    <div class="cp-card-body p-4">
+      <p class="text-muted mb-3">
+        Phishing remains the primary initial attack vector in modern intrusions. Attackers exploit how human users and web browsers interpret Uniform Resource Locators (URLs) to trick victims into disclosing credentials, financial tokens, and session cookies.
+      </p>
 
-    <div class="row g-4 mt-2">
-      <div class="col-md-6 col-lg-3">
-        <div class="p-3 bg-dark bg-opacity-50 rounded border border-secondary border-opacity-25 h-100">
-          <div class="text-danger fs-4 mb-2"><i class="bi bi-layers"></i></div>
-          <h3 class="h6 fw-bold text-light mb-1">Subdomain Camouflage</h3>
-          <p class="small text-muted mb-0">
-            Attackers prepend trusted brand names as subdomains (e.g. <code>paypal.com.attacker-domain.xyz</code>) to visually fool victims scanning only the leftmost portion of the URL.
-          </p>
+      <div class="row g-3">
+        <div class="col-md-6 col-lg-3">
+          <div class="p-3 bg-dark bg-opacity-60 rounded border border-secondary border-opacity-25 h-100">
+            <div class="text-danger fs-4 mb-2"><i class="bi bi-layers"></i></div>
+            <h4 class="h6 fw-bold text-light mb-1">Subdomain Camouflage</h4>
+            <p class="small text-muted mb-0">
+              Attackers prepend trusted brand names as subdomains (e.g. <code>paypal.com.attacker-domain.xyz</code>) to visually deceive victims scanning only the leftmost portion of the URL.
+            </p>
+          </div>
         </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="p-3 bg-dark bg-opacity-50 rounded border border-secondary border-opacity-25 h-100">
-          <div class="text-warning fs-4 mb-2"><i class="bi bi-link-45deg"></i></div>
-          <h3 class="h6 fw-bold text-light mb-1">URL Shortening Cloaking</h3>
-          <p class="small text-muted mb-0">
-            Services like bit.ly, tinyurl, or t.co mask the true destination domain, evading static email filters and preventing inspection until click-time.
-          </p>
+        <div class="col-md-6 col-lg-3">
+          <div class="p-3 bg-dark bg-opacity-60 rounded border border-secondary border-opacity-25 h-100">
+            <div class="text-warning fs-4 mb-2"><i class="bi bi-link-45deg"></i></div>
+            <h4 class="h6 fw-bold text-light mb-1">URL Shortening Cloaking</h4>
+            <p class="small text-muted mb-0">
+              Services like bit.ly or tinyurl mask the true destination domain, evading static email filters and preventing inspection until click-time.
+            </p>
+          </div>
         </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="p-3 bg-dark bg-opacity-50 rounded border border-secondary border-opacity-25 h-100">
-          <div class="text-cyan fs-4 mb-2"><i class="bi bi-hdd-network"></i></div>
-          <h3 class="h6 fw-bold text-light mb-1">Direct IP Address Hosts</h3>
-          <p class="small text-muted mb-0">
-            Hosting credential harvesting kits directly on raw IPv4/IPv6 addresses avoids domain registration records (WHOIS) and bypasses DNS reputation filters.
-          </p>
+        <div class="col-md-6 col-lg-3">
+          <div class="p-3 bg-dark bg-opacity-60 rounded border border-secondary border-opacity-25 h-100">
+            <div class="text-cyan fs-4 mb-2"><i class="bi bi-hdd-network"></i></div>
+            <h4 class="h6 fw-bold text-light mb-1">Direct IP Address Hosts</h4>
+            <p class="small text-muted mb-0">
+              Hosting credential harvesting kits directly on raw IPv4/IPv6 addresses avoids domain registration records (WHOIS) and bypasses DNS reputation filters.
+            </p>
+          </div>
         </div>
-      </div>
-      <div class="col-md-6 col-lg-3">
-        <div class="p-3 bg-dark bg-opacity-50 rounded border border-secondary border-opacity-25 h-100">
-          <div class="text-primary fs-4 mb-2"><i class="bi bi-at"></i></div>
-          <h3 class="h6 fw-bold text-light mb-1">Authentication '@' Bypass</h3>
-          <p class="small text-muted mb-0">
-            RFC standards interpret anything preceding the <code>@</code> character as user authentication information, redirecting the browser to the domain following the symbol.
-          </p>
+        <div class="col-md-6 col-lg-3">
+          <div class="p-3 bg-dark bg-opacity-60 rounded border border-secondary border-opacity-25 h-100">
+            <div class="text-primary fs-4 mb-2"><i class="bi bi-at"></i></div>
+            <h4 class="h6 fw-bold text-light mb-1">Authentication '@' Bypass</h4>
+            <p class="small text-muted mb-0">
+              RFC standards interpret anything preceding the <code>@</code> character as user authentication information, redirecting the browser to the domain following the symbol.
+            </p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <!-- The 17 Heuristic Feature Vectors -->
-  <div class="cyber-card p-4 p-md-5 mb-4">
-    <h2 class="h4 fw-bold text-light mb-3">
-      <i class="bi bi-cpu-fill text-cyan me-2"></i> The 17 Extracted Heuristic Feature Vectors
-    </h2>
-    <p class="text-muted mb-4">
-      Our feature extractor standardizes URLs into a 17-dimensional mathematical vector analyzed identically during model training and live runtime inference.
-    </p>
+  <div class="cp-card mb-4">
+    <div class="cp-card-header">
+      <h3 class="h6 fw-bold text-light mb-0">
+        <i class="bi bi-cpu-fill text-cyan me-2"></i> The 17 Extracted Heuristic Feature Vectors
+      </h3>
+      <span class="badge bg-dark border border-secondary text-dim small">Feature Engineering</span>
+    </div>
+    <div class="cp-card-body p-4">
+      <p class="text-muted mb-3">
+        Our feature extractor standardizes URLs into a 17-dimensional mathematical vector analyzed identically during model training and live runtime inference.
+      </p>
 
-    <div class="row g-3">
-      <div class="col-md-6">
-        <div class="p-3 rounded bg-dark border border-secondary border-opacity-25">
-          <h3 class="h6 fw-bold text-cyan mb-2">1. Lexical & Structural Metrics</h3>
-          <ul class="small text-muted mb-0 ps-3">
-            <li><strong>url_length:</strong> Total string character length. Suspicious links often exceed 75 characters.</li>
-            <li><strong>domain_length:</strong> Length of registered hostname. Spoof domains typically inflate lengths.</li>
-            <li><strong>num_dots:</strong> Frequency of '.' characters. Multi-dot strings reveal nested subdomains.</li>
-            <li><strong>num_hyphens:</strong> Hyphen counts. Hyphens rarely appear in reputable root brands.</li>
-            <li><strong>num_digits:</strong> Numeric digit frequency, indicating session IDs or hashed routes.</li>
-            <li><strong>path_length:</strong> Directory depth of resource paths.</li>
-            <li><strong>num_query_params:</strong> Count of query delimiters transmitting stolen data.</li>
-          </ul>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="p-3 rounded bg-dark border border-secondary border-opacity-25 h-100">
+            <h4 class="h6 fw-bold text-cyan mb-2">1. Lexical & Structural Metrics</h4>
+            <ul class="small text-muted mb-0 ps-3">
+              <li><strong>url_length:</strong> Total character length. Phishing links often exceed 75 characters.</li>
+              <li><strong>domain_length:</strong> Length of registered hostname. Spoof domains typically inflate lengths.</li>
+              <li><strong>num_dots:</strong> Frequency of '.' characters revealing nested subdomains.</li>
+              <li><strong>num_hyphens:</strong> Hyphen counts rarely present in primary legitimate brands.</li>
+              <li><strong>num_digits:</strong> Numeric digit frequency indicating session hashes or ports.</li>
+              <li><strong>path_length:</strong> Directory depth of resource paths.</li>
+              <li><strong>num_query_params:</strong> Count of query delimiters transmitting stolen data.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 rounded bg-dark border border-secondary border-opacity-25 h-100">
+            <h4 class="h6 fw-bold text-cyan mb-2">2. Heuristic Indicators & Syntax Anomalies</h4>
+            <ul class="small text-muted mb-0 ps-3">
+              <li><strong>has_ip_address:</strong> Direct IPv4/IPv6 address indicator.</li>
+              <li><strong>is_https:</strong> Indicator of secure protocol transmission.</li>
+              <li><strong>has_at_symbol:</strong> Presence of '@' user-info override character.</li>
+              <li><strong>num_suspicious_symbols:</strong> Count of ?, =, &, %, ~, +, $ characters.</li>
+              <li><strong>num_subdomains:</strong> Subdomain depth beyond root domain hierarchy.</li>
+              <li><strong>is_shortened:</strong> Match against known URL shortening service database.</li>
+              <li><strong>has_sensitive_keywords:</strong> Presence of trigger words (login, verify, secure).</li>
+              <li><strong>has_double_slash_redirect:</strong> '//' occurring within the URL path.</li>
+              <li><strong>prefix_suffix_hyphen:</strong> Domain names containing leading or trailing hyphens.</li>
+              <li><strong>has_tld_in_subdomain:</strong> TLD camouflage (e.g., .com embedded inside subdomains).</li>
+            </ul>
+          </div>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="p-3 rounded bg-dark border border-secondary border-opacity-25">
-          <h3 class="h6 fw-bold text-cyan mb-2">2. Heuristic Indicators & Syntax Anomalies</h3>
-          <ul class="small text-muted mb-0 ps-3">
-            <li><strong>has_ip_address:</strong> Binary flag detecting direct IPv4/IPv6 hosts.</li>
-            <li><strong>is_https:</strong> Indicator of secure protocol transmission.</li>
-            <li><strong>has_at_symbol:</strong> Presence of '@' user-info override character.</li>
-            <li><strong>num_suspicious_symbols:</strong> Count of symbols including ?, =, &, %, ~, +, $.</li>
-            <li><strong>num_subdomains:</strong> Depth of subdomains beyond standard domain hierarchy.</li>
-            <li><strong>is_shortened:</strong> Match against known URL shortening service database.</li>
-            <li><strong>has_sensitive_keywords:</strong> Presence of trigger words (login, verify, secure, banking).</li>
-            <li><strong>has_double_slash_redirect:</strong> '//' occurring within the URL path.</li>
-            <li><strong>prefix_suffix_hyphen:</strong> Domain names containing leading, trailing, or internal hyphens.</li>
-            <li><strong>has_tld_in_subdomain:</strong> TLD camouflage (e.g., .com embedded inside subdomains).</li>
-          </ul>
+    </div>
+  </div>
+
+  <!-- Executive Overview Card -->
+  <div class="cp-card mb-4">
+    <div class="cp-card-body p-4 p-md-5">
+      <div class="row g-4 align-items-center">
+        <div class="col-lg-8">
+          <h3 class="h5 fw-bold text-light mb-3">
+            <i class="bi bi-shield-lock-fill text-cyan me-2"></i> Project Objectives & Threat Landscape
+          </h3>
+          <p class="text-muted mb-3">
+            Phishing remains the primary initial attack vector in over 85% of corporate credential compromises and ransomware deployments. Threat actors exploit human cognitive limits and browser address bar truncation by deploying complex subdomains, brand typo-squatting, and URL redirection techniques.
+          </p>
+          <p class="text-muted mb-0">
+            <strong>CodePulse AI</strong> establishes a pre-click defense perimeter. Rather than waiting for a user or browser to load remote HTML/JS payloads, the system extracts a standardized <strong>17-dimensional lexical and structural feature vector</strong>, evaluating it against 100 trained decision trees to output calibrated risk scores in under 20 milliseconds.
+          </p>
+        </div>
+        <div class="col-lg-4">
+          <div class="p-3 rounded bg-dark bg-opacity-60 border border-secondary border-opacity-25 text-center">
+            <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="CodePulse AI" width="64" height="64" class="mb-3">
+            <h4 class="h6 fw-bold text-light mb-1">CodePulse AI Platform</h4>
+            <div class="text-cyan small font-mono mb-2">Version 2.5.0 Enterprise</div>
+            <span class="badge bg-success bg-opacity-25 border border-success text-success small">Offline Inference Engine</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <!-- End-to-End System Pipeline Flow -->
-  <div class="cyber-card p-4 p-md-5 mb-4">
-    <h2 class="h4 fw-bold text-light mb-3">
-      <i class="bi bi-bezier2 text-cyan me-2"></i> End-to-End Machine Learning Pipeline
-    </h2>
-
-    <div class="row g-3 text-center">
-      <div class="col-md-3">
-        <div class="p-3 bg-dark rounded border border-secondary border-opacity-25 h-100">
-          <span class="badge bg-secondary mb-2">Step 1</span>
-          <h3 class="h6 fw-bold text-light mb-1">Target Submission</h3>
-          <p class="small text-muted mb-0">HTTP/HTTPS validation, syntax parsing, and scheme sanitation without outbound network requests.</p>
+  <div class="cp-card mb-4">
+    <div class="cp-card-header">
+      <h3 class="h6 fw-bold text-light mb-0">
+        <i class="bi bi-bezier2 text-cyan me-2"></i> End-to-End Machine Learning Prediction Workflow
+      </h3>
+      <span class="badge bg-dark border border-secondary text-dim small">5-Stage Pipeline</span>
+    </div>
+    <div class="cp-card-body p-4">
+      <div class="row g-3 text-center">
+        <div class="col-md-2">
+          <div class="p-3 bg-dark rounded border border-secondary border-opacity-25 h-100">
+            <span class="badge bg-primary mb-2">Stage 1</span>
+            <h4 class="h6 fw-bold text-light mb-1">Submission</h4>
+            <p class="small text-muted mb-0">Input length validation, CRLF stripping, and HTTP/HTTPS normalization.</p>
+          </div>
         </div>
-      </div>
-      <div class="col-md-3">
-        <div class="p-3 bg-dark rounded border border-secondary border-opacity-25 h-100">
-          <span class="badge bg-secondary mb-2">Step 2</span>
-          <h3 class="h6 fw-bold text-light mb-1">Feature Extraction</h3>
-          <p class="small text-muted mb-0">Modular feature extraction converts the URL into a 17-dimensional numeric vector.</p>
+        <div class="col-md-2">
+          <div class="p-3 bg-dark rounded border border-secondary border-opacity-25 h-100">
+            <span class="badge bg-cyan text-dark mb-2">Stage 2</span>
+            <h4 class="h6 fw-bold text-light mb-1">17-Vector Extract</h4>
+            <p class="small text-muted mb-0">Extracts 17 structural and delimiter heuristics into NumPy array.</p>
+          </div>
         </div>
-      </div>
-      <div class="col-md-3">
-        <div class="p-3 bg-dark rounded border border-secondary border-opacity-25 h-100">
-          <span class="badge bg-secondary mb-2">Step 3</span>
-          <h3 class="h6 fw-bold text-light mb-1">Classifier Inference</h3>
-          <p class="small text-muted mb-0">Pre-trained ensemble pipeline evaluates feature weights and calculates continuous probability.</p>
+        <div class="col-md-3">
+          <div class="p-3 bg-dark rounded border border-secondary border-opacity-25 h-100">
+            <span class="badge bg-secondary mb-2">Stage 3</span>
+            <h4 class="h6 fw-bold text-light mb-1">StandardScaler</h4>
+            <p class="small text-muted mb-0">Normalizes input features using training mean and variance statistics.</p>
+          </div>
         </div>
-      </div>
-      <div class="col-md-3">
-        <div class="p-3 bg-dark rounded border border-secondary border-opacity-25 h-100">
-          <span class="badge bg-secondary mb-2">Step 4</span>
-          <h3 class="h6 fw-bold text-light mb-1">Verdict & History</h3>
-          <p class="small text-muted mb-0">Generates risk score, diagnostic breakdown, and commits timestamped log to SQLite.</p>
+        <div class="col-md-3">
+          <div class="p-3 bg-dark rounded border border-secondary border-opacity-25 h-100">
+            <span class="badge bg-success mb-2">Stage 4</span>
+            <h4 class="h6 fw-bold text-light mb-1">Random Forest</h4>
+            <p class="small text-muted mb-0">100 trees vote to generate discrete class and continuous probability.</p>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="p-3 bg-dark rounded border border-secondary border-opacity-25 h-100">
+            <span class="badge bg-warning text-dark mb-2">Stage 5</span>
+            <h4 class="h6 fw-bold text-light mb-1">Persistence</h4>
+            <p class="small text-muted mb-0">Commits timestamped scan audit to SQLite and renders diagnostic report.</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Academic Project Summary -->
-  <div class="cyber-card p-4 text-center">
-    <h2 class="h5 fw-bold text-light mb-2">Computer Science & Engineering Demonstration Project</h2>
-    <p class="small text-muted mx-auto mb-3" style="max-width: 650px;">
-      Built with Python Flask, Scikit-learn, Bootstrap 5, and Chart.js. Fully operational offline in modern development environments like Visual Studio Code.
+  <!-- Technology Stack Grid -->
+  <div class="cp-card mb-4">
+    <div class="cp-card-header">
+      <h3 class="h6 fw-bold text-light mb-0">
+        <i class="bi bi-stack text-cyan me-2"></i> Production Technology Stack
+      </h3>
+      <span class="badge bg-dark border border-secondary text-dim small">Verified Stack</span>
+    </div>
+    <div class="cp-card-body p-4">
+      <div class="row g-3">
+        <div class="col-sm-6 col-md-3">
+          <div class="p-3 rounded bg-dark bg-opacity-50 border border-secondary border-opacity-25 h-100">
+            <div class="text-cyan fs-4 mb-2"><i class="bi bi-terminal"></i></div>
+            <h4 class="h6 fw-bold text-light mb-1">Backend Framework</h4>
+            <p class="small text-muted mb-0">Python 3.11.15 &bull; Flask 3.1.3 &bull; WSGI Werkzeug &bull; Strict Type Validation</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <div class="p-3 rounded bg-dark bg-opacity-50 border border-secondary border-opacity-25 h-100">
+            <div class="text-success fs-4 mb-2"><i class="bi bi-cpu"></i></div>
+            <h4 class="h6 fw-bold text-light mb-1">Machine Learning</h4>
+            <p class="small text-muted mb-0">Scikit-Learn 1.9.1 &bull; Random Forest (100 Trees) &bull; Joblib Serialization</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <div class="p-3 rounded bg-dark bg-opacity-50 border border-secondary border-opacity-25 h-100">
+            <div class="text-primary fs-4 mb-2"><i class="bi bi-window"></i></div>
+            <h4 class="h6 fw-bold text-light mb-1">Frontend Engineering</h4>
+            <p class="small text-muted mb-0">HTML5 Semantic &bull; Bootstrap 5.3 &bull; CSS Custom Properties &bull; Chart.js 4.4</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <div class="p-3 rounded bg-dark bg-opacity-50 border border-secondary border-opacity-25 h-100">
+            <div class="text-warning fs-4 mb-2"><i class="bi bi-database"></i></div>
+            <h4 class="h6 fw-bold text-light mb-1">Data Storage</h4>
+            <p class="small text-muted mb-0">SQLite 3 &bull; Parameterized SQL &bull; Index Optimization &bull; CSV Export</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REST API Documentation -->
+  <div class="cp-card mb-4">
+    <div class="cp-card-header">
+      <h3 class="h6 fw-bold text-light mb-0">
+        <i class="bi bi-braces text-cyan me-2"></i> RESTful API Specifications
+      </h3>
+      <span class="badge bg-dark border border-secondary text-secondary small">JSON API Endpoints</span>
+    </div>
+    <div class="cp-card-body p-4">
+      <p class="small text-muted mb-3">
+        Automated scanners, SIEM platforms, and browser extensions can invoke the detection engine programmatically via JSON:
+      </p>
+
+      <div class="mb-3">
+        <span class="badge bg-primary me-2">POST</span>
+        <code class="text-cyan font-mono fs-6">/api/scan</code> <span class="text-dim small me-2">or</span>
+        <code class="text-cyan font-mono fs-6">/api/analyze</code>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="p-3 rounded bg-dark border border-secondary border-opacity-25">
+            <div class="small text-dim text-uppercase fw-bold mb-2">Request Payload (application/json)</div>
+            <pre class="font-mono text-light small mb-0"><code>{
+  "url": "https://example.com/login.php"
+}</code></pre>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 rounded bg-dark border border-secondary border-opacity-25">
+            <div class="small text-dim text-uppercase fw-bold mb-2">Response Payload (200 OK)</div>
+            <pre class="font-mono text-cyan small mb-0"><code>{
+  "success": true,
+  "scan_id": 128,
+  "url": "https://example.com/login.php",
+  "prediction": "Legitimate",
+  "confidence": 97.2,
+  "risk_level": "Low Risk",
+  "processing_time_ms": 14.2,
+  "feature_details": [...],
+  "analyzed_at": "2026-11-02 11:30:00"
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Responsible Cybersecurity Notice -->
+  <div class="cp-card p-4 text-center">
+    <h3 class="h6 fw-bold text-light mb-2">Responsible Cybersecurity Disclosure & Academic Demonstration</h3>
+    <p class="small text-muted mx-auto mb-3" style="max-width: 680px;">
+      CodePulse AI was developed as an advanced academic computer science and cybersecurity demonstration platform. All evaluations operate in non-destructive local mode without visiting or downloading malicious code from investigated domains.
     </p>
-    <a href="{{ url_for('index') }}" class="btn btn-cyber">
-      <i class="bi bi-shield-check me-1"></i> Return to Threat Scanner
+    <a href="{{ url_for('scanner') }}" class="btn-cyber-primary">
+      <i class="bi bi-radar me-1"></i> Access URL Scanner Console
     </a>
   </div>
 
 </div>
 {% endblock %}
-

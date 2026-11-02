@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+
+{% block title %}Threat Analytics & Telemetry | CodePulse AI Platform{% endblock %}
+{% block page_title %}Threat Analytics & Security Telemetry{% endblock %}
+{% block breadcrumb %}Platform Operations / Analytical Intelligence{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+
+  <!-- Header & Export Row -->
+  <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
+    <div>
+      <h2 class="h5 fw-bold text-light mb-1">
+        <i class="bi bi-graph-up-arrow text-cyan me-2"></i> Threat Analytics & Historical Distribution
+      </h2>
+      <p class="small text-muted mb-0">
+        Empirical statistical telemetry aggregated directly from persistent SQLite scan audits.
+      </p>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <a href="{{ url_for('export_history') }}" class="btn btn-sm btn-cyber-secondary">
+        <i class="bi bi-download me-1"></i> Export Telemetry CSV
+      </a>
+      <a href="{{ url_for('scanner') }}" class="btn btn-sm btn-cyber-primary">
+        <i class="bi bi-radar me-1"></i> Launch Scanner
+      </a>
+    </div>
+  </div>
+
+  <!-- KPI Summary Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-sm-6 col-lg-3">
+      <div class="cp-card kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-title">Total Audits</span>
+          <div class="kpi-icon-box blue"><i class="bi bi-database-check"></i></div>
+        </div>
+        <div class="kpi-value">{{ stats.total }}</div>
+        <div class="kpi-subtext"><i class="bi bi-hdd text-cyan"></i> Database size: {{ analytics.db_size_kb }} KB</div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <div class="cp-card kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-title">Phishing Intercepts</span>
+          <div class="kpi-icon-box red"><i class="bi bi-shield-x"></i></div>
+        </div>
+        <div class="kpi-value text-danger">{{ stats.phishing }}</div>
+        <div class="kpi-subtext text-danger"><i class="bi bi-exclamation-octagon"></i> {{ stats.detection_rate }}% threat frequency</div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <div class="cp-card kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-title">Safe Verified Sites</span>
+          <div class="kpi-icon-box green"><i class="bi bi-shield-check"></i></div>
+        </div>
+        <div class="kpi-value text-success">{{ stats.legitimate }}</div>
+        <div class="kpi-subtext text-success"><i class="bi bi-check-circle"></i> {{ stats.safe_percentage }}% benign proportion</div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <div class="cp-card kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-title">Average Latency</span>
+          <div class="kpi-icon-box cyan"><i class="bi bi-lightning-charge"></i></div>
+        </div>
+        <div class="kpi-value text-cyan">{{ stats.avg_processing_time_ms }} <span style="font-size:1.1rem;">ms</span></div>
+        <div class="kpi-subtext"><i class="bi bi-cpu text-cyan"></i> Fast local inference</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Analytics Charts Row 1: Volume Timeline & Threat Ratio -->
+  <div class="row g-4 mb-4">
+    <!-- Daily Volume Timeline Chart -->
+    <div class="col-lg-8">
+      <div class="cp-card h-100">
+        <div class="cp-card-header">
+          <div>
+            <h3 class="h6 fw-bold text-light mb-0">
+              <i class="bi bi-activity text-cyan me-2"></i> Scan Volume & Threat Frequency Timeline
+            </h3>
+            <div class="small text-dim">Day-by-day distribution of evaluated URLs</div>
+          </div>
+          <span class="badge bg-dark border border-secondary text-secondary small">Timeline</span>
+        </div>
+        <div class="cp-card-body">
+          {% if analytics.daily_trends and analytics.daily_trends|length > 0 %}
+            <div style="height: 280px;">
+              <canvas id="analyticsVolumeChart"></canvas>
+            </div>
+          {% else %}
+            <div class="text-center py-5 text-muted">
+              <i class="bi bi-graph-up display-4 d-block mb-2 text-dim"></i>
+              <p class="small mb-0">Insufficient telemetry to plot volume timeline.</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Threat vs Legitimate Ratio Doughnut -->
+    <div class="col-lg-4">
+      <div class="cp-card h-100">
+        <div class="cp-card-header">
+          <div>
+            <h3 class="h6 fw-bold text-light mb-0">
+              <i class="bi bi-pie-chart-fill text-cyan me-2"></i> Verdict Proportion
+            </h3>
+            <div class="small text-dim">Legitimate vs. Phishing ratio</div>
+          </div>
+          <span class="badge bg-dark border border-secondary text-secondary small">Aggregate</span>
+        </div>
+        <div class="cp-card-body d-flex flex-column justify-content-center">
+          {% if stats.total > 0 %}
+            <div style="height: 240px;">
+              <canvas id="analyticsRatioChart"></canvas>
+            </div>
+            <div class="row g-2 text-center mt-3 pt-2 border-top border-secondary border-opacity-25">
+              <div class="col-6">
+                <span class="text-dim small d-block">Safe Websites</span>
+                <span class="fw-bold text-success font-mono fs-5">{{ stats.legitimate }}</span>
+              </div>
+              <div class="col-6">
+                <span class="text-dim small d-block">Threats Flagged</span>
+                <span class="fw-bold text-danger font-mono fs-5">{{ stats.phishing }}</span>
+              </div>
+            </div>
+          {% else %}
+            <div class="text-center py-5 text-muted">
+              <i class="bi bi-pie-chart display-4 d-block mb-2 text-dim"></i>
+              <p class="small mb-0">No data available.</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Analytics Charts Row 2: Confidence Histogram & Risk Level Breakdown -->
+  <div class="row g-4 mb-4">
+    <!-- Confidence Score Distribution Histogram -->
+    <div class="col-lg-6">
+      <div class="cp-card h-100">
+        <div class="cp-card-header">
+          <div>
+            <h3 class="h6 fw-bold text-light mb-0">
+              <i class="bi bi-bar-chart-fill text-cyan me-2"></i> Model Certainty Bracket Distribution
+            </h3>
+            <div class="small text-dim">Frequency of scans grouped by continuous probability confidence</div>
+          </div>
+          <span class="badge bg-dark border border-secondary text-dim small">Continuous %</span>
+        </div>
+        <div class="cp-card-body">
+          {% if stats.total > 0 %}
+            <div style="height: 260px;">
+              <canvas id="analyticsConfidenceChart"></canvas>
+            </div>
+          {% else %}
+            <div class="text-center py-5 text-muted">
+              <p class="small mb-0">No data available.</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Risk Level Distribution Horizontal Bar -->
+    <div class="col-lg-6">
+      <div class="cp-card h-100">
+        <div class="cp-card-header">
+          <div>
+            <h3 class="h6 fw-bold text-light mb-0">
+              <i class="bi bi-shield-shaded text-cyan me-2"></i> Risk Category Distribution
+            </h3>
+            <div class="small text-dim">Tiers: High, Moderate-High, Low-to-Moderate, Low</div>
+          </div>
+          <span class="badge bg-dark border border-secondary text-dim small">Categorical</span>
+        </div>
+        <div class="cp-card-body">
+          {% if stats.total > 0 %}
+            <div style="height: 260px;">
+              <canvas id="analyticsRiskChart"></canvas>
+            </div>
+          {% else %}
+            <div class="text-center py-5 text-muted">
+              <p class="small mb-0">No data available.</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Daily Audit Summary Table -->
+  {% if analytics.daily_trends and analytics.daily_trends|length > 0 %}
+  <div class="cp-card mb-4">
+    <div class="cp-card-header">
+      <h3 class="h6 fw-bold text-light mb-0">
+        <i class="bi bi-calendar-event text-cyan me-2"></i> Daily Chronological Log Summary
+      </h3>
+      <span class="badge bg-dark border border-secondary text-dim small">Last 30 Days</span>
+    </div>
+    <div class="cp-card-body p-0">
+      <div class="table-responsive">
+        <table class="table cp-table align-middle">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Total Evaluated</th>
+              <th>Safe Websites</th>
+              <th>Phishing Threats</th>
+              <th>Daily Threat Rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for d in analytics.daily_trends %}
+              <tr>
+                <td class="font-mono text-light fw-bold">{{ d.scan_date }}</td>
+                <td class="font-mono">{{ d.total }}</td>
+                <td class="font-mono text-success">{{ d.legitimate }}</td>
+                <td class="font-mono text-danger">{{ d.phishing }}</td>
+                <td>
+                  <span class="badge {% if d.phishing > 0 %}badge-danger{% else %}badge-safe{% endif %}">
+                    {{ ((d.phishing / d.total * 100) | round(1)) if d.total > 0 else 0 }}%
+                  </span>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% if analytics %}
+<div id="analyticsPageData" data-analytics="{{ analytics | tojson | forceescape }}" class="d-none"></div>
+{% endif %}
+{% endblock %}
+

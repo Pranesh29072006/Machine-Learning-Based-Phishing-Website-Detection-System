@@ -1,0 +1,267 @@
+{% extends "base.html" %}
+
+{% block title %}Security Insights & Heuristic Knowledge Base | CodePulse AI{% endblock %}
+{% block page_title %}Security Insights & Attack Vector Analysis{% endblock %}
+{% block breadcrumb %}Intelligence & AI / Adversarial Heuristic Engineering{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+
+  <!-- Header Banner -->
+  <div class="mb-4">
+    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 mb-2 rounded-pill bg-dark border border-secondary border-opacity-25 small text-cyan">
+      <i class="bi bi-shield-shaded"></i>
+      <span>Cyber Threat Intelligence & Machine Learning Architecture</span>
+    </div>
+    <h2 class="h4 fw-bold text-light mb-1">
+      URL Threat Anatomy & <span class="highlight text-cyan">Heuristic Feature Engineering</span>
+    </h2>
+    <p class="text-muted small mb-0">
+      Academic and practical breakdown of Uniform Resource Locator manipulation techniques, lexical anomalies, and ensemble defense principles.
+    </p>
+  </div>
+
+  <!-- Attack Vector Deep Dive Cards -->
+  <div class="row g-4 mb-4">
+    <!-- Subdomain Camouflage -->
+    <div class="col-md-6 col-lg-4">
+      <div class="cp-card p-4 h-100">
+        <div class="d-flex align-items-center gap-2 mb-2 text-danger">
+          <i class="bi bi-layers fs-4"></i>
+          <h3 class="h6 fw-bold mb-0 text-light">Subdomain Camouflage</h3>
+        </div>
+        <p class="small text-muted mb-3">
+          Attackers prepend recognized brand names as leftmost subdomains (e.g. <code>paypal.com.attacker-node.xyz</code>). Users scanning only the front of the URL mistake the fake landing page for the legitimate corporate service.
+        </p>
+        <div class="p-2 rounded bg-dark border border-secondary border-opacity-25 small font-mono text-dim">
+          Vector: <span class="text-cyan">num_subdomains</span> &bull; <span class="text-cyan">has_tld_in_subdomain</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Direct IP Hosting -->
+    <div class="col-md-6 col-lg-4">
+      <div class="cp-card p-4 h-100">
+        <div class="d-flex align-items-center gap-2 mb-2 text-danger">
+          <i class="bi bi-hdd-network fs-4"></i>
+          <h3 class="h6 fw-bold mb-0 text-light">Direct IP Address Hosting</h3>
+        </div>
+        <p class="small text-muted mb-3">
+          Hosting phishing kits on raw IPv4 or IPv6 addresses (e.g. <code>http://192.168.1.1/login</code>) avoids domain registration records (WHOIS) and bypasses DNS reputation blacklists. Legitimate commercial web services rarely expose raw IP logins.
+        </p>
+        <div class="p-2 rounded bg-dark border border-secondary border-opacity-25 small font-mono text-dim">
+          Vector: <span class="text-cyan">has_ip_address</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- URL Shortening Masking -->
+    <div class="col-md-6 col-lg-4">
+      <div class="cp-card p-4 h-100">
+        <div class="d-flex align-items-center gap-2 mb-2 text-warning">
+          <i class="bi bi-link-45deg fs-4"></i>
+          <h3 class="h6 fw-bold mb-0 text-light">URL Shortening Cloaking</h3>
+        </div>
+        <p class="small text-muted mb-3">
+          Shorteners like <code>bit.ly</code>, <code>tinyurl.com</code>, or <code>t.co</code> completely mask destination hostnames and path tokens. Adversaries leverage link shortening to defeat static email gateway filters and prevent pre-click domain inspection.
+        </p>
+        <div class="p-2 rounded bg-dark border border-secondary border-opacity-25 small font-mono text-dim">
+          Vector: <span class="text-cyan">is_shortened</span> (50+ known services)
+        </div>
+      </div>
+    </div>
+
+    <!-- Delimiter Abuse -->
+    <div class="col-md-6 col-lg-4">
+      <div class="cp-card p-4 h-100">
+        <div class="d-flex align-items-center gap-2 mb-2 text-warning">
+          <i class="bi bi-question-diamond fs-4"></i>
+          <h3 class="h6 fw-bold mb-0 text-light">Query Delimiter Obfuscation</h3>
+        </div>
+        <p class="small text-muted mb-3">
+          Abnormal concentrations of query delimiters (<code>?</code>, <code>=</code>, <code>&</code>, <code>%</code>, <code>~</code>, <code>+</code>, <code>$</code>) transmit base64-encoded session IDs, stolen victim emails, or dynamic malware routing arguments.
+        </p>
+        <div class="p-2 rounded bg-dark border border-secondary border-opacity-25 small font-mono text-dim">
+          Vector: <span class="text-cyan">num_suspicious_symbols</span> &bull; <span class="text-cyan">num_query_params</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trademark Hyphenation -->
+    <div class="col-md-6 col-lg-4">
+      <div class="cp-card p-4 h-100">
+        <div class="d-flex align-items-center gap-2 mb-2 text-cyan">
+          <i class="bi bi-dash-circle fs-4"></i>
+          <h3 class="h6 fw-bold mb-0 text-light">Trademark Hyphen Spoofing</h3>
+        </div>
+        <p class="small text-muted mb-3">
+          Hyphen-separated brand compounding (e.g. <code>paypal-security-center-update.com</code>) mimics official institutional infrastructure. Legitimate top brands rarely register complex hyphenated hostnames for core authentication portals.
+        </p>
+        <div class="p-2 rounded bg-dark border border-secondary border-opacity-25 small font-mono text-dim">
+          Vector: <span class="text-cyan">num_hyphens</span> &bull; <span class="text-cyan">prefix_suffix_hyphen</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Free TLS Misconceptions -->
+    <div class="col-md-6 col-lg-4">
+      <div class="cp-card p-4 h-100">
+        <div class="d-flex align-items-center gap-2 mb-2 text-primary">
+          <i class="bi bi-lock fs-4"></i>
+          <h3 class="h6 fw-bold mb-0 text-light">HTTPS Protocol Misconceptions</h3>
+        </div>
+        <p class="small text-muted mb-3">
+          Modern phishing kits frequently secure free automated TLS certificates (e.g. Let's Encrypt). While HTTP indicates clear transmission insecurity, HTTPS alone is no longer an absolute guarantee that a website is benign.
+        </p>
+        <div class="p-2 rounded bg-dark border border-secondary border-opacity-25 small font-mono text-dim">
+          Vector: <span class="text-cyan">is_https</span> (Contextual Weight: 9.27%)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- The 17 Heuristic Vectors Catalog -->
+  <div class="cp-card mb-4">
+    <div class="cp-card-header">
+      <div>
+        <h3 class="h6 fw-bold text-light mb-0">
+          <i class="bi bi-cpu-fill text-cyan me-2"></i> The 17 Standardized Heuristic Features
+        </h3>
+        <div class="small text-dim">Structured catalog of mathematical feature extractors analyzed during training and live inference</div>
+      </div>
+      <span class="badge bg-dark border border-secondary text-secondary small">17 Feature Vectors</span>
+    </div>
+    <div class="cp-card-body p-0">
+      <div class="table-responsive">
+        <table class="table cp-table align-middle">
+          <thead>
+            <tr>
+              <th style="width: 5%;">#</th>
+              <th style="width: 22%;">Feature Identifier</th>
+              <th style="width: 15%;">Data Type</th>
+              <th style="width: 58%;">Adversarial Vector & Technical Rationale</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-mono text-dim">01</td>
+              <td class="font-mono text-cyan fw-bold">url_length</td>
+              <td>Numeric (float)</td>
+              <td class="small text-muted">Total character length of the raw URL. Phishing URLs frequently exceed 75 characters to embed redirect tokens or mimic complex enterprise paths.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-dim">02</td>
+              <td class="font-mono text-cyan fw-bold">domain_length</td>
+              <td>Numeric (float)</td>
+              <td class="small text-muted">Character count of the registered hostname. Spoof domains often pad brand names with long descriptive keywords to deceive casual user inspection.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-dim">03</td>
+              <td class="font-mono text-cyan fw-bold">num_dots</td>
+              <td>Numeric (float)</td>
+              <td class="small text-muted">Dot separator frequency. Multiple dots indicate nested subdomains or masked TLD structures commonly observed in spear phishing.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-dim">04</td>
+              <td class="font-mono text-cyan fw-bold">num_hyphens</td>
+              <td>Numeric (float)</td>
+              <td class="small text-muted">Hyphen count across the full URL. High hyphen frequency indicates brand prefix/suffix squatting.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-dim">05</td>
+              <td class="font-mono text-cyan fw-bold">num_digits</td>
+              <td>Numeric (float)</td>
+              <td class="small text-muted">Numeric digit count. High digit density signifies autogenerated hashes, victim tracking tokens, or dynamic malware routing endpoints.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-dim">06</td>
+              <td class="font-mono text-cyan fw-bold">has_ip_address</td>
+              <td>Binary (0/1)</td>
+              <td class="small text-muted">Detects direct IPv4 and IPv6 literal hosts. Legitimate commercial web services rarely use raw IPs for public service delivery.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-dim">07</td>
+              <td class="font-mono text-cyan fw-bold">is_https</td>
+              <td>Binary (0/1)</td>
+              <td class="small text-muted">Evaluates transport security encryption. Absence of TLS (HTTP) flags unencrypted plaintext data exposure.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-dim">08</td>
+              <td class="font-mono text-cyan fw-bold">has_at_symbol</td>
+              <td>Binary (0/1)</td>
+              <td class="small text-muted">Detects the RFC 3986 <code>@</code> user-info delimiter. Browsers disregard everything preceding <code>@</code>, routing the victim to the hostname following the symbol.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-dim">09</td>
+              <td class="font-mono text-cyan fw-bold">num_suspicious_symbols</td>
+              <td>Numeric (float)</td>
+              <td class="small text-muted">Count of special symbols including <code>?</code>, <code>=</code>, <code>&</code>, <code>%</code>, <code>~</code>, <code>+</code>, <code>$</code>, <code>#</code>, <code>!</code>.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-dim">10</td>
+              <td class="font-mono text-cyan fw-bold">num_subdomains</td>
+              <td>Numeric (float)</td>
+              <td class="small text-muted">Depth of nested subdomain levels beyond the second-level domain (SLD) and top-level domain (TLD).</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-dim">11</td>
+              <td class="font-mono text-cyan fw-bold">is_shortened</td>
+              <td>Binary (0/1)</td>
+              <td class="small text-muted">Evaluates whether the hostname matches over 50 prominent URL shortening services (e.g. <code>bit.ly</code>, <code>tinyurl.com</code>, <code>t.co</code>).</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-dim">12</td>
+              <td class="font-mono text-cyan fw-bold">path_length</td>
+              <td>Numeric (float)</td>
+              <td class="small text-muted">Character length of the directory path component. Deep nested directories often host disguised phishing credential landing pages.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-dim">13</td>
+              <td class="font-mono text-cyan fw-bold">num_query_params</td>
+              <td>Numeric (float)</td>
+              <td class="small text-muted">Quantity of query string key-value parameters passed in the request string.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-dim">14</td>
+              <td class="font-mono text-cyan fw-bold">has_sensitive_keywords</td>
+              <td>Numeric (float)</td>
+              <td class="small text-muted">Frequency of 24 sensitive keywords (e.g. <code>login</code>, <code>verify</code>, <code>secure</code>, <code>banking</code>, <code>account</code>, <code>credential</code>).</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-dim">15</td>
+              <td class="font-mono text-cyan fw-bold">has_double_slash_redirect</td>
+              <td>Binary (0/1)</td>
+              <td class="small text-muted">Checks for <code>//</code> occurring inside the path component, which causes open redirect vulnerabilities in modern web browsers.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-dim">16</td>
+              <td class="font-mono text-cyan fw-bold">prefix_suffix_hyphen</td>
+              <td>Binary (0/1)</td>
+              <td class="small text-muted">Detects domain names containing internal or trailing hyphens separating brand names from deceptive action terms.</td>
+            </tr>
+            <tr>
+              <td class="font-mono text-dim">17</td>
+              <td class="font-mono text-cyan fw-bold">has_tld_in_subdomain</td>
+              <td>Binary (0/1)</td>
+              <td class="small text-muted">Detects deceptive TLD strings (such as <code>.com.</code> or <code>.org.</code>) embedded inside subdomain segments.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Synthesis Callout -->
+  <div class="cp-card p-4 text-center">
+    <h3 class="h6 fw-bold text-light mb-2">Why Ensemble Machine Learning Outperforms Static Blacklists</h3>
+    <p class="small text-muted mx-auto mb-3" style="max-width: 720px;">
+      Zero-day phishing campaigns register thousands of disposable domains daily, rendering static blacklists obsolete within hours. By extracting standardized lexical geometry and evaluating feature weights across 100 randomized decision trees, CodePulse AI identifies fraudulent structure instantly—even on targets never before indexed by security vendors.
+    </p>
+    <a href="{{ url_for('scanner') }}" class="btn-cyber-primary">
+      <i class="bi bi-radar me-1"></i> Try the URL Threat Scanner
+    </a>
+  </div>
+
+</div>
+{% endblock %}
+

@@ -506,7 +506,39 @@ def run_tests():
         f"HTTP {status} Method Not Allowed returned correctly"
     )
 
-    # 5. Result Page by ID Route (GET /result/<scan_id>)
+    # 5. JSON API Endpoint Alias (POST /api/scan)
+    status_scan, body_scan, _ = runner.http_post_json("/api/scan", {"url": "https://www.google.com"})
+    try:
+        api_scan_data = json.loads(body_scan)
+        api_scan_ok = (status_scan == 200 and api_scan_data.get("success") is True and api_scan_data.get("prediction") == "Legitimate")
+    except Exception:
+        api_scan_ok = False
+        api_scan_data = {}
+
+    runner.record(
+        "API",
+        "JSON Analysis API Alias Endpoint (POST /api/scan)",
+        api_scan_ok,
+        f"HTTP {status_scan}, alias functional, returned prediction='{api_scan_data.get('prediction')}'"
+    )
+
+    # 6. Localhost Demonstration URL Support
+    status_local, body_local, _ = runner.http_post_json("/api/scan", {"url": "http://localhost:5000"})
+    try:
+        local_data = json.loads(body_local)
+        local_ok = (status_local == 200 and local_data.get("success") is True)
+    except Exception:
+        local_ok = False
+        local_data = {}
+
+    runner.record(
+        "Backend",
+        "Localhost Demo URL Processing (http://localhost:5000)",
+        local_ok,
+        f"HTTP {status_local}, successfully parsed and predicted on developer/demo localhost URL"
+    )
+
+    # 7. Result Page by ID Route (GET /result/<scan_id>)
     status, body, _ = runner.http_get(f"/result/{new_id}")
     res_page_ok = (status == 200 and f"Scan Report #{new_id}" in body and "Extracted URL Feature Breakdown" in body)
     runner.record(
@@ -574,6 +606,20 @@ def run_tests():
         "Zero External Outbound HTTP Requests (Offline Safety)",
         zero_net_ok,
         f"Completed lexical inference in {elapsed:.3f}s with no socket delays to target"
+    )
+
+    # 5. Defensive HTTP Security Headers
+    status_h, _, headers_h = runner.http_get("/")
+    has_nosniff = headers_h.get("X-Content-Type-Options") == "nosniff"
+    has_sameorigin = headers_h.get("X-Frame-Options") == "SAMEORIGIN"
+    has_xss = "1; mode=block" in headers_h.get("X-XSS-Protection", "")
+    has_referrer = headers_h.get("Referrer-Policy") == "strict-origin-when-cross-origin"
+    headers_ok = (status_h == 200 and has_nosniff and has_sameorigin and has_xss and has_referrer)
+    runner.record(
+        "Security",
+        "Defensive HTTP Security Headers Enforcement",
+        headers_ok,
+        "Verified nosniff, SAMEORIGIN, X-XSS-Protection, and strict-origin-when-cross-origin headers"
     )
 
     # -------------------------------------------------------------

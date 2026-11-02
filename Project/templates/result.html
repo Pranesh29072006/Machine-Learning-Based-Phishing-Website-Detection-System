@@ -1,201 +1,199 @@
 {% extends "base.html" %}
 
-{% block title %}Scan Analysis Result | {{ result.url }}{% endblock %}
+{% block title %}Scan Report #{{ result.scan_id }} - Scan Analysis Result | CodePulse AI{% endblock %}
+{% block page_title %}Scan Report #{{ result.scan_id }} &bull; Scan Analysis Result{% endblock %}
+{% block breadcrumb %}Platform Operations / Scan Report #{{ result.scan_id }}{% endblock %}
 
 {% block content %}
-<div class="container py-4">
+<div class="container-fluid p-0">
 
-  <!-- Breadcrumb Navigation -->
-  <nav aria-label="breadcrumb" class="mb-4">
-    <ol class="breadcrumb mb-0">
-      <li class="breadcrumb-item"><a href="{{ url_for('index') }}"><i class="bi bi-house me-1"></i> Dashboard</a></li>
-      <li class="breadcrumb-item active text-cyan" aria-current="page">Scan Report #{{ result.scan_id }}</li>
-    </ol>
-  </nav>
+  <!-- Breadcrumb Navigation & Top Action Row -->
+  <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
+    <div class="d-flex align-items-center gap-2">
+      <a href="{{ url_for('scanner') }}" class="btn btn-sm btn-cyber-secondary">
+        <i class="bi bi-arrow-left me-1"></i> New Scan
+      </a>
+      <span class="text-dim">/</span>
+      <span class="badge bg-dark border border-secondary text-light font-mono">Scan Report #{{ result.scan_id }}</span>
+      <span class="badge bg-dark border border-secondary text-cyan font-mono"><i class="bi bi-stopwatch me-1"></i>{{ result.processing_time_ms }} ms</span>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <button class="btn btn-sm btn-cyber-secondary btn-copy-url" data-copy="{{ result.url }}">
+        <i class="bi bi-clipboard me-1"></i> Copy URL
+      </button>
+      <a href="{{ url_for('history') }}" class="btn btn-sm btn-cyber-secondary">
+        <i class="bi bi-clock-history me-1"></i> History Log
+      </a>
+    </div>
+  </div>
 
-  <!-- Verdict Banner -->
+  <!-- Primary Verdict Banner -->
   <div class="row justify-content-center mb-4">
-    <div class="col-lg-10">
+    <div class="col-12">
       {% if result.prediction == 'Phishing' %}
-        <div class="verdict-banner verdict-phishing">
+        <div class="verdict-banner-box verdict-danger">
           <i class="bi bi-shield-exclamation display-2 text-danger"></i>
-          <div class="verdict-title">SUSPECTED PHISHING THREAT</div>
-          <p class="text-light mb-3" style="max-width: 600px; margin: 0 auto;">
-            This URL exhibits prominent structural anomalies and lexical indicators strongly associated with credential harvesting or deceptive redirects.
+          <div class="verdict-headline">SUSPECTED PHISHING THREAT DETECTED</div>
+          <p class="text-light mx-auto mb-3" style="max-width: 650px;">
+            The automated ensemble classifier identified prominent structural anomalies, trademark spoofing patterns, or credential harvesting heuristics.
           </p>
-          <div class="d-inline-flex align-items-center gap-2 px-3 py-1 bg-danger bg-opacity-25 border border-danger rounded-pill text-danger fw-bold small">
-            <i class="bi bi-radioactive"></i> {{ result.risk_level }} &bull; Threat Confidence: {{ result.confidence }}%
+          <div class="d-inline-flex flex-wrap align-items-center justify-content-center gap-2 px-3 py-1 bg-danger bg-opacity-25 border border-danger rounded-pill text-danger fw-bold small">
+            <i class="bi bi-radioactive"></i> {{ result.risk_level }} &bull; Threat Confidence Certainty: {{ result.confidence }}% &bull; Latency: {{ result.processing_time_ms }} ms
           </div>
         </div>
       {% else %}
-        <div class="verdict-banner verdict-legitimate">
+        <div class="verdict-banner-box verdict-safe">
           <i class="bi bi-shield-check display-2 text-success"></i>
-          <div class="verdict-title">CLASSIFIED LEGITIMATE / SAFE</div>
-          <p class="text-light mb-3" style="max-width: 600px; margin: 0 auto;">
-            The analyzed URL adheres to standard domain conventions and benign lexical patterns without evident fraudulent signatures.
+          <div class="verdict-headline">CLASSIFIED LEGITIMATE / LOW RISK</div>
+          <p class="text-light mx-auto mb-3" style="max-width: 650px;">
+            The target URL conforms to standard lexical structures and benign domain conventions without evident deceptive manipulation signatures.
           </p>
-          <div class="d-inline-flex align-items-center gap-2 px-3 py-1 bg-success bg-opacity-25 border border-success rounded-pill text-success fw-bold small">
-            <i class="bi bi-check-circle-fill"></i> {{ result.risk_level }} &bull; Model Confidence: {{ result.confidence }}%
+          <div class="d-inline-flex flex-wrap align-items-center justify-content-center gap-2 px-3 py-1 bg-success bg-opacity-25 border border-success rounded-pill text-success fw-bold small">
+            <i class="bi bi-check-circle-fill"></i> {{ result.risk_level }} &bull; Model Confidence: {{ result.confidence }}% &bull; Latency: {{ result.processing_time_ms }} ms
           </div>
         </div>
       {% endif %}
     </div>
   </div>
 
-  <!-- Submitted Target & Probability Overview -->
-  <div class="row justify-content-center mb-4">
-    <div class="col-lg-10">
-      <div class="cyber-card p-4">
-        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 pb-3 border-bottom border-secondary border-opacity-25">
-          <div>
-            <div class="text-muted small text-uppercase fw-bold mb-1">Target Uniform Resource Locator (URL)</div>
-            <div class="font-mono text-light text-break fs-6 bg-dark bg-opacity-50 p-2 rounded border border-secondary border-opacity-25">
-              {{ result.url }}
+  <!-- Target URL & Confidence Gauge Overview Card -->
+  <div class="cp-card mb-4">
+    <div class="cp-card-body p-4">
+      <div class="row g-4 align-items-center">
+        <!-- Target URL Display -->
+        <div class="col-lg-7">
+          <div class="text-dim small text-uppercase fw-bold mb-1">Target Uniform Resource Locator</div>
+          <div class="p-3 rounded bg-dark bg-opacity-60 border border-secondary border-opacity-25 d-flex align-items-center justify-content-between gap-3">
+            <div class="font-mono text-light text-break small">
+              <i class="bi bi-link-45deg text-cyan me-1 fs-6"></i> {{ result.url }}
             </div>
-          </div>
-          <div class="d-flex align-items-center gap-2 flex-shrink-0">
-            <button class="btn btn-outline-cyan btn-sm btn-copy-url" data-copy="{{ result.url }}">
-              <i class="bi bi-clipboard"></i> Copy URL
+            <button class="btn btn-sm btn-link text-cyan p-0 btn-copy-url flex-shrink-0" data-copy="{{ result.url }}" title="Copy URL">
+              <i class="bi bi-clipboard fs-5"></i>
             </button>
-            <span class="badge bg-secondary p-2 small">
-              <i class="bi bi-calendar3 me-1"></i> {{ result.analyzed_at }}
-            </span>
+          </div>
+          <div class="d-flex align-items-center gap-3 mt-2 text-dim small">
+            <span><i class="bi bi-calendar3 me-1"></i> Scanned: {{ result.analyzed_at }}</span>
+            <span>&bull;</span>
+            <span><i class="bi bi-cpu me-1"></i> Pipeline: Random Forest (100 Trees)</span>
           </div>
         </div>
 
         <!-- Confidence Gauge & Verdict Summary -->
-        <div class="row align-items-center mt-3 pt-2 gy-3">
-          <div class="col-md-5">
-            <div class="d-flex justify-content-between small text-muted mb-1">
-              <span>Model Classification Certainty:</span>
-              <span class="fw-bold text-light">{{ result.confidence }}%</span>
+        <div class="col-lg-5">
+          <div class="p-3 rounded bg-dark bg-opacity-40 border border-secondary border-opacity-25">
+            <div class="d-flex align-items-center justify-content-between mb-1">
+              <span class="text-dim small fw-semibold">Model Classification Certainty:</span>
+              <span class="fw-bold font-mono text-light fs-5">{{ result.confidence }}%</span>
             </div>
-            <div class="confidence-meter">
-              {% if result.prediction == 'Phishing' %}
-                <div class="progress-bar bg-danger" style="width: {{ result.confidence }}%;"></div>
-              {% else %}
-                <div class="progress-bar bg-success" style="width: {{ result.confidence }}%;"></div>
-              {% endif %}
+            <div class="confidence-progress-rail">
+              <div class="progress-bar {% if result.prediction == 'Phishing' %}bg-danger{% else %}bg-success{% endif %} h-100" role="progressbar" aria-valuenow="{{ result.confidence }}" aria-valuemin="0" aria-valuemax="100" {{ ('style="width: ' ~ result.confidence ~ '%;"') | safe }}></div>
             </div>
-            <div class="d-flex justify-content-between text-dim small mt-1 font-mono">
-              <span>50% (Uncertain)</span>
-              <span>100% (High Confidence)</span>
+            <div class="d-flex justify-content-between text-dim small mt-1 font-mono" style="font-size:0.7rem;">
+              <span>50% (Uncertain Threshold)</span>
+              <span>100% (High Certainty)</span>
             </div>
-          </div>
-          <div class="col-md-7">
-            <div class="small text-muted mb-1 fw-bold text-uppercase">Diagnostic Summary:</div>
-            <p class="small text-light mb-0">
+            <div class="small text-muted mt-2 pt-2 border-top border-secondary border-opacity-25">
               {{ result.summary }}
-            </p>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Extracted Heuristic Features Breakdown -->
-  <div class="row justify-content-center mb-4">
-    <div class="col-lg-10">
-      <div class="cyber-card p-4">
-        <div class="d-flex align-items-center justify-content-between mb-3">
-          <div>
-            <h2 class="h5 fw-bold text-light mb-1">
-              <i class="bi bi-cpu text-cyan me-2"></i> Extracted URL Feature Breakdown
-            </h2>
-            <p class="text-muted small mb-0">
-              Granular lexical attributes fed into the trained Machine Learning classifier during evaluation.
-            </p>
-          </div>
-          <span class="badge bg-dark border border-secondary text-cyan px-3 py-2">
-            17 Vectors Analyzed
-          </span>
-        </div>
-
-        <div class="table-responsive">
-          <table class="table cyber-table align-middle">
-            <thead>
+  <!-- 17 Extracted Heuristic Vectors Table -->
+  <div class="cp-card mb-4">
+    <div class="cp-card-header">
+      <div>
+        <h3 class="h6 fw-bold text-light mb-0">
+          <i class="bi bi-cpu-fill text-cyan me-2"></i> Extracted URL Feature Breakdown
+        </h3>
+        <div class="small text-dim">Granular numeric and structural features evaluated during inference (17 Vectors Analyzed)</div>
+      </div>
+      <span class="badge bg-dark border border-secondary text-cyan font-mono small">
+        17 Vectors Analyzed &bull; Shape: (1, 17)
+      </span>
+    </div>
+    <div class="cp-card-body p-0">
+      <div class="table-responsive">
+        <table class="table cp-table align-middle">
+          <thead>
+            <tr>
+              <th style="width: 25%;">Heuristic Feature</th>
+              <th style="width: 15%;">Detected Value</th>
+              <th style="width: 15%;">Threat Status</th>
+              <th style="width: 45%;">Cybersecurity Analysis & Implication</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for feat in result.feature_details %}
               <tr>
-                <th style="width: 25%;">Heuristic Feature</th>
-                <th style="width: 20%;">Detected Value</th>
-                <th style="width: 15%;">Threat Status</th>
-                <th style="width: 40%;">Security Implication</th>
+                <td class="fw-semibold text-light">
+                  {{ feat.name }}
+                </td>
+                <td class="font-mono text-cyan fw-bold">
+                  {{ feat.value }}
+                </td>
+                <td>
+                  {% if feat.status == 'safe' %}
+                    <span class="badge badge-safe">
+                      <i class="bi bi-check-circle-fill me-1"></i> Normal
+                    </span>
+                  {% elif feat.status == 'warning' %}
+                    <span class="badge badge-warning">
+                      <i class="bi bi-exclamation-triangle-fill me-1"></i> Elevated
+                    </span>
+                  {% else %}
+                    <span class="badge badge-danger">
+                      <i class="bi bi-x-octagon-fill me-1"></i> Suspicious
+                    </span>
+                  {% endif %}
+                </td>
+                <td class="small text-muted">
+                  {{ feat.description }}
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {% for feat in result.feature_details %}
-                <tr>
-                  <td class="fw-semibold text-light">
-                    {{ feat.name }}
-                  </td>
-                  <td class="font-mono text-cyan">
-                    {{ feat.value }}
-                  </td>
-                  <td>
-                    {% if feat.status == 'safe' %}
-                      <span class="badge badge-safe">
-                        <i class="bi bi-check-circle me-1"></i> Normal
-                      </span>
-                    {% elif feat.status == 'warning' %}
-                      <span class="badge badge-warning">
-                        <i class="bi bi-exclamation-triangle me-1"></i> Elevated
-                      </span>
-                    {% else %}
-                      <span class="badge badge-danger">
-                        <i class="bi bi-x-octagon me-1"></i> Suspicious
-                      </span>
-                    {% endif %}
-                  </td>
-                  <td class="small text-muted">
-                    {{ feat.description }}
-                  </td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cybersecurity Advisory Disclaimer Card -->
+  <div class="cp-card mb-4 border-warning border-opacity-25" style="background: rgba(245, 158, 11, 0.04);">
+    <div class="cp-card-body p-4">
+      <div class="d-flex align-items-start gap-3">
+        <i class="bi bi-exclamation-octagon-fill text-warning fs-3 flex-shrink-0"></i>
+        <div>
+          <h4 class="h6 fw-bold text-warning mb-1">Critical Cybersecurity Disclaimer & Probabilistic Modeling Notice</h4>
+          <p class="small text-muted mb-2">
+            CodePulse AI evaluates URLs based purely on statistical lexical and structural heuristic patterns. Machine learning predictions represent mathematical probabilities of safety or fraud, <strong>not an absolute guarantee</strong>.
+          </p>
+          <ul class="small text-muted mb-0 ps-3">
+            <li>Modern threat actors frequently secure valid TLS/SSL certificates for credential harvesting kits.</li>
+            <li>Zero-day attacks and newly registered domains may exhibit low lexical anomalies while still hosting malicious content.</li>
+            <li>Always verify identity and inspect digital certificates before disclosing passwords, multi-factor tokens, or payment card data.</li>
+          </ul>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Mandatory Security Warning & Advisory Card -->
-  <div class="row justify-content-center mb-4">
-    <div class="col-lg-10">
-      <div class="alert alert-warning border-0 cyber-card p-4">
-        <div class="d-flex align-items-start gap-3">
-          <i class="bi bi-exclamation-octagon-fill text-warning fs-3 flex-shrink-0"></i>
-          <div>
-            <h3 class="h6 fw-bold text-light mb-1">Critical Cybersecurity Disclaimer</h3>
-            <p class="small text-muted mb-2">
-              This detection system utilizes statistical machine learning algorithms to evaluate URL syntax and structure. Predictions represent mathematical likelihoods, <strong>not an absolute guarantee of safety</strong>.
-            </p>
-            <ul class="small text-muted mb-0 ps-3">
-              <li>Even legitimate-appearing URLs can be compromised via zero-day vulnerabilities, sub-domain takeovers, or cross-site scripting (XSS).</li>
-              <li>Modern threat actors frequently secure valid SSL/TLS certificates for malicious landing pages.</li>
-              <li>Never provide passwords, two-factor authentication tokens, or payment card details on unverified domains.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Navigation Action Buttons -->
-  <div class="row justify-content-center">
-    <div class="col-lg-10 d-flex flex-wrap align-items-center justify-content-between gap-3">
-      <a href="{{ url_for('index') }}" class="btn btn-cyber">
-        <i class="bi bi-search me-1"></i> Scan Another Website
+  <!-- Bottom Navigation Buttons -->
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+    <a href="{{ url_for('scanner') }}" class="btn-cyber-primary">
+      <i class="bi bi-search me-1"></i> Scan Another URL
+    </a>
+    <div class="d-flex gap-2">
+      <a href="{{ url_for('history') }}" class="btn-cyber-secondary">
+        <i class="bi bi-clock-history me-1"></i> Full Scan History
       </a>
-      <div class="d-flex gap-2">
-        <a href="{{ url_for('history') }}" class="btn btn-dark border border-secondary text-light">
-          <i class="bi bi-clock-history me-1"></i> Full Scan History
-        </a>
-        <a href="{{ url_for('model_performance') }}" class="btn btn-dark border border-secondary text-light">
-          <i class="bi bi-bar-chart-line me-1"></i> Model Metrics
-        </a>
-      </div>
+      <a href="{{ url_for('model_performance') }}" class="btn-cyber-secondary">
+        <i class="bi bi-cpu me-1"></i> View Model Benchmarks
+      </a>
     </div>
   </div>
 
 </div>
 {% endblock %}
-
