@@ -1,101 +1,96 @@
-🛡️ Phishing Website Detection System
+# 🛡️ Phishing Website Detection System
 
-Machine Learning-Based Phishing Website Detection Using URL Feature Analysis
+### Machine Learning-Based Phishing Website Detection Using URL Feature Analysis
 
-📌 Project Overview
+<p align="center">
+  A Machine Learning-powered web application that analyzes URLs and identifies potentially malicious phishing websites using a Random Forest classifier.
+</p>
 
-The Phishing Website Detection System is a web-based security application designed to identify and detect potentially malicious phishing websites using Machine Learning techniques.
+---
 
-The system analyzes URLs by extracting 17 different URL-based features and uses a trained Random Forest classification model to determine whether a website is Legitimate or Phishing.
+## 📌 Project Overview
 
-Built using Python and Flask, the application provides a user-friendly interface where users can enter a website URL and receive an instant security prediction. It also maintains scan history using an SQLite database.
+The **Phishing Website Detection System** is a web-based cybersecurity application designed to identify potentially malicious phishing websites using Machine Learning techniques.
 
-🎯 Objectives
+The system analyzes submitted URLs by extracting **17 different URL-based features** and processes them using a trained **Random Forest classification model** to predict whether a website is **Legitimate** or **Phishing**.
 
-Detect phishing websites using Machine Learning.
+Developed using Python and Flask, the application provides a user-friendly interface for instant URL security analysis. It also maintains previous scanning records using an SQLite database.
 
-Analyze URLs using 17 important URL-based features.
+## 🎯 Objectives
 
-Classify websites as legitimate or phishing.
+- Detect potentially malicious phishing websites using Machine Learning.
+- Analyze URLs using 17 important URL-based features.
+- Classify websites as legitimate or phishing.
+- Provide fast and automated URL security analysis.
+- Maintain previous scan records.
+- Improve awareness of phishing website threats.
 
-Provide fast and automated URL security analysis.
+## ✨ Key Features
 
-Maintain previous scan records.
+| Feature | Description |
+|---|---|
+| 🔍 URL Detection | Analyze submitted website URLs. |
+| 🤖 Machine Learning | Uses a Random Forest classification model. |
+| 📊 17 URL Features | Extracts important URL characteristics. |
+| ⚡ Instant Results | Displays prediction results through the web interface. |
+| 🗂️ Scan History | Stores and displays previous scanning records. |
+| 📈 Model Performance | Provides model evaluation information. |
+| 💻 User-Friendly Interface | Simple and easy-to-use web application. |
 
-Improve awareness of phishing website threats.
+## 🛠️ Technologies Used
 
-✨ Key Features
+| Category | Technologies |
+|---|---|
+| Programming Language | Python |
+| Frontend | HTML, CSS, JavaScript |
+| Backend | Flask |
+| Machine Learning | Scikit-learn, Random Forest |
+| Database | SQLite |
+| Data Processing | Pandas, NumPy |
+| Model Storage | Joblib |
 
-URL Detection: Analyze submitted website URLs.
+## 🏗️ System Architecture
 
-Machine Learning Prediction: Uses a Random Forest classification model.
+The application follows this workflow:
 
-17 URL Features: Extracts important characteristics from URLs.
+```text
+          User
+           |
+           v
+    Enter Website URL
+           |
+           v
+     Flask Application
+           |
+           v
+     URL Feature Extraction
+           |
+           v
+   Extract 17 URL Features
+           |
+           v
+   Random Forest Classifier
+           |
+           v
+     Prediction Result
+       /         \
+      v           v
+ Legitimate     Phishing
+       \         /
+           |
+           v
+    Display Result
+           |
+           v
+    SQLite Database
+           |
+           v
+       Scan History
+```
 
-Instant Results: Displays the prediction through a web interface.
+## 📂 Project Structure
 
-Scan History: Stores previous scanning records.
-
-Model Performance: Provides information about model evaluation.
-
-User-Friendly Interface: Simple and easy-to-use web application.
-
-🛠️ Technologies Used
-
-Category
-
-Technologies
-
-Programming Language
-
-Python
-
-Frontend
-
-HTML, CSS, JavaScript
-
-Backend
-
-Flask
-
-Machine Learning
-
-Scikit-learn, Random Forest
-
-Database
-
-SQLite
-
-Data Processing
-
-Pandas, NumPy
-
-Model Storage
-
-Joblib
-
-🏗️ System Architecture
-
-The system follows this workflow:
-
-User enters a website URL.
-
-The application receives the submitted URL.
-
-The feature extraction module analyzes the URL.
-
-17 URL-based features are extracted.
-
-The trained Random Forest model processes the extracted features.
-
-The system predicts whether the website is legitimate or phishing.
-
-The prediction result is displayed to the user.
-
-Scan information is stored in the SQLite database.
-
-📂 Project Structure
-
+```text
 Phishing-Website-Detection/
 │
 ├── app.py
@@ -103,6 +98,7 @@ Phishing-Website-Detection/
 ├── train_model.py
 ├── test_system.py
 ├── requirements.txt
+├── README.md
 │
 ├── data/
 │   ├── phishing_dataset.csv
@@ -131,94 +127,116 @@ Phishing-Website-Detection/
     ├── history.html
     ├── about.html
     └── model_performance.html
+```
 
-⚙️ Installation and Setup
+## ⚙️ Installation and Setup
 
-1. Clone the Repository
+Follow these steps to run the project locally.
 
+### 1. Clone the Repository
+
+```bash
 git clone https://github.com/USERNAME/REPOSITORY-NAME.git
+```
 
-2. Navigate to the Project Folder
+### 2. Navigate to the Project Folder
 
+```bash
 cd Phishing-Website-Detection
+```
 
-3. Create a Virtual Environment
+### 3. Create a Virtual Environment
 
+```bash
 python -m venv venv
+```
 
-4. Activate the Virtual Environment
+### 4. Activate the Virtual Environment
 
-Windows:
+**Windows:**
 
+```powershell
 venv\Scripts\activate
+```
 
-5. Install Dependencies
+### 5. Install Dependencies
 
+```bash
 pip install -r requirements.txt
+```
 
-6. Run the Application
+### 6. Run the Application
 
+```bash
 python app.py
+```
 
-7. Open in Browser
+### 7. Open in Browser
 
+Visit:
+
+```text
 http://127.0.0.1:5000/
+```
 
-🧠 Machine Learning Model
+## 🧠 Machine Learning Model
 
-The project uses a Random Forest Classifier to identify phishing websites.
+The project uses a **Random Forest Classifier** to identify potentially phishing websites.
 
-The model works by analyzing URL characteristics and using the extracted features to classify a given website.
+The model analyzes URL characteristics using the extracted features and classifies the submitted URL into one of two categories:
 
-Model Highlights:
+- **Legitimate:** The URL is classified as legitimate by the trained model.
+- **Phishing:** The URL is classified as potentially associated with phishing activity by the trained model.
 
-Random Forest classification algorithm.
+### Model Highlights
 
-17 URL-based features.
+- Random Forest classification algorithm.
+- 17 URL-based features.
+- Trained phishing detection model.
+- Automated URL classification.
+- Model performance evaluation.
 
-Trained phishing detection model.
+## 🗄️ Database
 
-Automated URL classification.
+The application uses **SQLite** to maintain scan history.
 
-Model performance evaluation.
+The database stores relevant scanning information, allowing users to:
 
-🗄️ Database
+- View previous URL scans.
+- Retrieve stored prediction results.
+- Maintain scanning records.
+- Access historical analysis information.
 
-SQLite is used to maintain the application's scan history.
+## 🔮 Future Enhancements
 
-The database stores relevant scanning information, allowing users to view previous URL analysis results.
+- Integration with real-time threat intelligence services.
+- Improved detection using advanced Machine Learning algorithms.
+- Browser extension support.
+- Automated blacklist checking.
+- Additional website security analysis features.
+- Cloud-based application deployment.
 
-🔮 Future Enhancements
+## 🔐 Disclaimer
 
-Integrate real-time threat intelligence.
+This project is developed for educational and cybersecurity research purposes.
 
-Improve detection using advanced machine learning algorithms.
+The predictions generated by the Machine Learning model are based on URL characteristics and should not be considered a guarantee that a website is completely safe or malicious. Users should exercise caution when visiting unfamiliar websites.
 
-Add browser extension support.
+## 👨‍💻 Authors
 
-Implement automated blacklist checking.
-
-Introduce additional website security analysis features.
-
-Deploy the application on a cloud platform.
-
-🔐 Disclaimer
-
-This project is developed for educational and cybersecurity research purposes. Predictions generated by the machine learning model should not be considered a guarantee that a website is completely safe or malicious.
-
-👨‍💻 Author
-
-Pranesh
-
+**Pranesh**  
 Computer Science and Engineering Student
 
-Mohammed Arshath
-
+**Mohammed Arshath**  
 Computer Science and Engineering Student
 
-
-⭐ Support
+## ⭐ Support
 
 If you find this project useful, consider giving the repository a ⭐ on GitHub.
 
-Phishing Website Detection System – Protecting Users Through Machine Learning.
+---
+
+<p align="center">
+  <b>🛡️ Phishing Website Detection System</b><br>
+  Protecting Users Through Machine Learning
+</p>
